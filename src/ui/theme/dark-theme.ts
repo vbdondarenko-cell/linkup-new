@@ -1,183 +1,297 @@
-// Dark Theme for LinkUp Design System
-// Designed independently, OLED-friendly, comfortable
+/**
+ * LinkUp Design System 2026
+ * Dark Theme - OLED-friendly, comfortable
+ * Not an inversion - thoughtfully designed
+ */
 
-import { colors } from '../tokens/colors';
-import { spacing } from '../tokens/spacing';
-import { shadows } from '../tokens/shadows';
-import { radius } from '../tokens/radius';
+import {
+  brand,
+  semantic,
+  neutral,
+  premium,
+  business,
+  organizer,
+  surface,
+  text,
+  border,
+  interactive,
+  focus,
+} from '../tokens/colors';
+
+import { spacing, layout, component, touchTarget, gap, padding } from '../tokens/spacing';
+import { radius, componentRadius } from '../tokens/radius';
+import { darkShadows, elevation, componentShadow, focusRing, glow } from '../tokens/shadows';
+import { duration, easing, transitions, motion } from '../tokens/animation';
+import { zIndex, overlayZIndex, mapZIndex, navZIndex } from '../tokens/z-index';
+import { typography, fontFamily } from '../tokens/typography';
 
 export const darkTheme = {
   mode: 'dark' as const,
-  
+
+  // ============================================
+  // COLORS
+  // ============================================
+
   colors: {
-    // Background colors
-    background: {
-      primary: colors.neutral[950],
-      secondary: colors.neutral[900],
-      tertiary: colors.neutral[800],
-      inverse: colors.neutral[0],
+    // Brand colors (slightly brighter for dark mode)
+    brand: {
+      primary: {
+        50: '#F0F5FF',
+        100: '#E0EAFF',
+        200: '#C7D4FF',
+        300: '#A3B8FC',
+        400: '#7A94F6',
+        500: '#5A70ED',
+        600: '#4654D9',
+        700: '#3840B5',
+        800: '#303491',
+        900: '#1C1B40',
+        950: '#12113A',
+      },
+      secondary: {
+        50: '#FDF4FF',
+        100: '#FAE8FF',
+        200: '#F5D6FE',
+        300: '#F0B4FC',
+        400: '#E686F8',
+        500: '#D85EEF',
+        600: '#C23EDD',
+        700: '#A329C0',
+        800: '#852299',
+        900: '#5E1B6B',
+        950: '#451050',
+      },
+      accent: {
+        50: '#ECFDF5',
+        100: '#D1FAE5',
+        200: '#A7F3D0',
+        300: '#6EE7B7',
+        400: '#34D399',
+        500: '#10B981',
+        600: '#059669',
+        700: '#047857',
+        800: '#065F46',
+        900: '#064E3B',
+        950: '#022C22',
+      },
     },
-    
-    // Surface colors
-    surface: {
-      primary: colors.neutral[900],
-      secondary: colors.neutral[800],
-      tertiary: colors.neutral[700],
-      elevated: colors.neutral[800],
-      interactive: colors.neutral[800],
-      inverse: colors.neutral[0],
-    },
-    
-    // Card
-    card: {
-      background: colors.neutral[900],
-      border: colors.neutral[700],
-      shadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-    },
-    
-    // Border
-    border: {
-      default: colors.neutral[700],
-      muted: colors.neutral[800],
-      strong: colors.neutral[600],
-      inverse: colors.neutral[300],
-    },
-    
-    // Divider
-    divider: {
-      default: colors.neutral[800],
-      strong: colors.neutral[700],
-    },
-    
-    // Text colors
-    text: {
-      primary: colors.neutral[0],
-      secondary: colors.neutral[400],
-      tertiary: colors.neutral[500],
-      disabled: colors.neutral[600],
-      inverse: colors.neutral[900],
-      link: colors.primary[400],
-      linkHover: colors.primary[300],
-    },
-    
-    // Interactive
-    interactive: {
-      primary: colors.primary[400],
-      primaryHover: colors.primary[300],
-      primaryPressed: colors.primary[500],
-      secondary: colors.secondary[400],
-      secondaryHover: colors.secondary[300],
-      secondaryPressed: colors.secondary[500],
-      muted: colors.neutral[800],
-      mutedHover: colors.neutral[700],
-      mutedPressed: colors.neutral[600],
-      disabled: colors.neutral[800],
-    },
-    
-    // Focus
-    focus: {
-      ring: 'rgba(165, 180, 252, 0.4)',
-      indicator: colors.primary[400],
-    },
-    
-    // Overlay
-    overlay: {
-      light: 'rgba(0, 0, 0, 0.6)',
-      medium: 'rgba(0, 0, 0, 0.7)',
-      heavy: 'rgba(0, 0, 0, 0.85)',
-      backdrop: 'rgba(0, 0, 0, 0.5)',
-    },
-    
-    // Map specific
-    map: {
-      background: '#1A1A1A',
-      controls: 'rgba(30, 30, 30, 0.95)',
-      controlsBorder: colors.neutral[700],
-      bottomSheet: colors.neutral[900],
-      marker: colors.primary[400],
-      userLocation: colors.accent[400],
-      cluster: colors.secondary[400],
-    },
-    
-    // Status
+
+    // Semantic status colors
     status: {
       success: {
-        light: colors.semantic.success.light,
-        dark: colors.semantic.success.dark,
-        bg: 'rgba(34, 197, 94, 0.15)',
-        text: colors.accent[300],
+        light: '#34D399',
+        DEFAULT: '#10B981',
+        dark: '#059669',
+        bg: 'rgba(16, 185, 129, 0.15)',
+        bgSubtle: 'rgba(16, 185, 129, 0.1)',
+        text: '#6EE7B7',
+        border: 'rgba(16, 185, 129, 0.3)',
       },
       warning: {
-        light: colors.semantic.warning.light,
-        dark: colors.semantic.warning.dark,
+        light: '#FBBF24',
+        DEFAULT: '#F59E0B',
+        dark: '#D97706',
         bg: 'rgba(245, 158, 11, 0.15)',
+        bgSubtle: 'rgba(245, 158, 11, 0.1)',
         text: '#FCD34D',
+        border: 'rgba(245, 158, 11, 0.3)',
       },
       danger: {
-        light: colors.semantic.danger.light,
-        dark: colors.semantic.danger.dark,
+        light: '#F87171',
+        DEFAULT: '#EF4444',
+        dark: '#DC2626',
         bg: 'rgba(239, 68, 68, 0.15)',
-        text: colors.semantic.danger.light,
+        bgSubtle: 'rgba(239, 68, 68, 0.1)',
+        text: '#FCA5A5',
+        border: 'rgba(239, 68, 68, 0.3)',
       },
       info: {
-        light: colors.semantic.info.light,
-        dark: colors.semantic.info.dark,
+        light: '#60A5FA',
+        DEFAULT: '#3B82F6',
+        dark: '#2563EB',
         bg: 'rgba(59, 130, 246, 0.15)',
-        text: colors.semantic.info.light,
+        bgSubtle: 'rgba(59, 130, 246, 0.1)',
+        text: '#93C5FD',
+        border: 'rgba(59, 130, 246, 0.3)',
       },
     },
-    
-    // Premium/Feature
+
+    // Premium/Business/Organizer colors (adjusted for dark mode)
     premium: {
-      accent: colors.premium.dark,
-      background: 'rgba(251, 191, 36, 0.15)',
+      light: '#FBBF24',
+      DEFAULT: '#F59E0B',
+      dark: '#D97706',
+      bg: 'rgba(251, 191, 36, 0.15)',
+      bgSubtle: 'rgba(251, 191, 36, 0.1)',
+      text: '#FCD34D',
+      border: 'rgba(251, 191, 36, 0.3)',
+      glow: 'rgba(251, 191, 36, 0.3)',
     },
-    
     business: {
-      accent: colors.business.dark,
-      background: 'rgba(59, 130, 246, 0.15)',
+      light: '#60A5FA',
+      DEFAULT: '#3B82F6',
+      dark: '#2563EB',
+      bg: 'rgba(59, 130, 246, 0.15)',
+      bgSubtle: 'rgba(59, 130, 246, 0.1)',
+      text: '#93C5FD',
+      border: 'rgba(59, 130, 246, 0.3)',
+      glow: 'rgba(59, 130, 246, 0.3)',
     },
-    
     organizer: {
-      accent: colors.organizer.dark,
-      background: 'rgba(168, 85, 247, 0.15)',
+      light: '#C084FC',
+      DEFAULT: '#A855F7',
+      dark: '#9333EA',
+      bg: 'rgba(168, 85, 247, 0.15)',
+      bgSubtle: 'rgba(168, 85, 247, 0.1)',
+      text: '#D8B4FE',
+      border: 'rgba(168, 85, 247, 0.3)',
+      glow: 'rgba(168, 85, 247, 0.3)',
+    },
+
+    // Surface hierarchy (dark mode)
+    surface: {
+      background: surface.background.dark,
+      primary: surface.primary.dark,
+      secondary: surface.secondary.dark,
+      elevated: surface.elevated.dark,
+      tertiary: surface.tertiary.dark,
+      inverse: surface.inverse.dark,
+      floating: surface.floating.dark,
+      overlay: surface.overlay.dark,
+    },
+
+    // Text colors (dark mode)
+    text: {
+      primary: text.primary.dark,
+      secondary: text.secondary.dark,
+      tertiary: text.tertiary.dark,
+      disabled: text.disabled.dark,
+      placeholder: text.placeholder.dark,
+      inverse: text.inverse.dark,
+      link: text.link.dark,
+    },
+
+    // Border colors (dark mode)
+    border: {
+      default: border.default.dark,
+      subtle: border.subtle.dark,
+      strong: border.strong.dark,
+      inverse: border.inverse.dark,
+    },
+
+    // Interactive colors (dark mode)
+    interactive: {
+      primary: brand.primary[400],
+      primaryHover: brand.primary[300],
+      primaryPressed: brand.primary[500],
+      primaryDisabled: neutral[700],
+      secondary: brand.secondary[400],
+      secondaryHover: brand.secondary[300],
+      secondaryPressed: brand.secondary[500],
+      secondaryDisabled: neutral[700],
+      muted: interactive.muted.dark.default,
+      mutedHover: interactive.muted.dark.hover,
+      mutedPressed: interactive.muted.dark.pressed,
+      mutedDisabled: interactive.muted.dark.disabled,
+    },
+
+    // Focus/Accessibility
+    focus: {
+      ring: focus.ring.dark,
+      indicator: brand.primary[400],
+    },
+
+    // Map specific (dark mode)
+    map: {
+      background: surface.map.background.dark,
+      overlay: surface.map.overlay.dark,
+      marker: brand.primary[400],
+      markerSelected: brand.accent[400],
+      userLocation: brand.accent[400],
+      cluster: brand.secondary[400],
     },
   },
-  
-  // Spacing
-  spacing: spacing,
-  
-  // Border radius
+
+  // ============================================
+  // TYPOGRAPHY
+  // ============================================
+
+  typography: {
+    ...typography,
+    fontFamily: fontFamily.sans,
+  },
+
+  // ============================================
+  // SPACING
+  // ============================================
+
+  spacing: {
+    ...spacing,
+    layout,
+    component,
+    touchTarget,
+    gap,
+    padding,
+  },
+
+  // ============================================
+  // RADIUS
+  // ============================================
+
   radius: {
     ...radius,
-    component: {
-      button: '8px',
-      buttonSmall: '6px',
-      buttonLarge: '10px',
-      input: '10px',
-      card: '16px',
-      modal: '20px',
-      bottomSheet: '20px',
-      avatar: '9999px',
-      badge: '9999px',
-      chip: '9999px',
-      fab: '16px',
-    },
+    component: componentRadius,
   },
-  
-  // Shadows
+
+  // ============================================
+  // SHADOWS & ELEVATION (darker mode)
+  // ============================================
+
   shadows: {
-    ...shadows,
+    ...darkShadows,
+    elevation,
     component: {
-      sm: '0 1px 2px rgba(0, 0, 0, 0.3)',
-      md: '0 2px 8px rgba(0, 0, 0, 0.3)',
-      lg: '0 4px 16px rgba(0, 0, 0, 0.4)',
-      xl: '0 8px 24px rgba(0, 0, 0, 0.5)',
-      card: '0 2px 8px rgba(0, 0, 0, 0.25)',
-      cardHover: '0 8px 16px rgba(0, 0, 0, 0.35)',
-      modal: '0 25px 50px -12px rgba(0, 0, 0, 0.6)',
-      fab: '0 4px 14px rgba(0, 0, 0, 0.4)',
-      bottomSheet: '0 -4px 20px rgba(0, 0, 0, 0.3)',
+      ...componentShadow,
+      card: darkShadows.sm,
+      cardHover: darkShadows.md,
+    },
+    focusRing: focusRing.dark,
+    glow,
+  },
+
+  // ============================================
+  // MOTION
+  // ============================================
+
+  motion: {
+    duration,
+    easing,
+    transitions,
+    ...motion,
+  },
+
+  // ============================================
+  // Z-INDEX
+  // ============================================
+
+  zIndex: {
+    ...zIndex,
+    overlay: overlayZIndex,
+    map: mapZIndex,
+    nav: navZIndex,
+  },
+
+  // ============================================
+  // ICON SIZES
+  // ============================================
+
+  icon: {
+    size: {
+      xs: '12px',
+      sm: '16px',
+      md: '20px',
+      lg: '24px',
+      xl: '32px',
     },
   },
 } as const;

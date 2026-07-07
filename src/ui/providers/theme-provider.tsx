@@ -1,8 +1,21 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useColorScheme } from 'react-native';
-import { Theme, ThemeMode, getTheme } from '../theme/theme';
+/**
+ * LinkUp Design System 2026
+ * Theme Provider - React Context for theming
+ */
 
-interface ThemeContextValue {
+'use client';
+
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
+import { useColorScheme } from 'react-native';
+import { Theme, ThemeMode, ThemeContextValue, getTheme } from '../theme/theme';
+
+interface ThemeProviderProps {
+  children: ReactNode;
+  initialMode?: ThemeMode;
+  onModeChange?: (mode: ThemeMode) => void;
+}
+
+interface ThemeContextValueInternal {
   theme: Theme;
   mode: ThemeMode;
   setMode: (mode: ThemeMode) => void;
@@ -11,43 +24,49 @@ interface ThemeContextValue {
   isLight: boolean;
 }
 
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
-
-export interface ThemeProviderProps {
-  children: ReactNode;
-  initialMode?: ThemeMode;
-}
+const ThemeContext = createContext<ThemeContextValueInternal | undefined>(undefined);
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
   initialMode = 'system',
+  onModeChange,
 }) => {
   const systemColorScheme = useColorScheme();
   const [mode, setMode] = useState<ThemeMode>(initialMode);
+  const [systemDark, setSystemDark] = useState<boolean>(false);
 
-  const theme = getTheme(mode);
+  // Update system dark preference
+  useEffect(() => {
+    setSystemDark(systemColorScheme === 'dark');
+  }, [systemColorScheme]);
 
-  const isDark = mode === 'dark' || (mode === 'system' && systemColorScheme === 'dark');
+  // Compute current theme
+  const theme = useMemo<Theme>(() => {
+    if (mode === 'system') {
+      return systemDark ? getTheme('dark') : getTheme('light');
+    }
+    return getTheme(mode);
+  }, [mode, systemDark]);
+
+  const isDark = mode === 'dark' || (mode === 'system' && systemDark);
   const isLight = !isDark;
 
-  const toggle = () => {
-    setMode((prev) => {
-      if (prev === 'light') return 'dark';
-      if (prev === 'dark') return 'light';
-      return systemColorScheme === 'dark' ? 'light' : 'dark';
-    });
-  };
+  // Set mode with callback
+  const handleSetMode = useCallback((newMode: ThemeMode) => {
+    setMode(newMode);
+    onModeChange?.(newMode);
+  }, [onModeChange]);
 
-  useEffect(() => {
-    if (mode === 'system' && systemColorScheme) {
-      // Force re-render when system theme changes
-    }
-  }, [systemColorScheme, mode]);
+  // Toggle between light and dark
+  const toggle = useCallback(() => {
+    const newMode = theme.mode === 'dark' ? 'light' : 'dark';
+    handleSetMode(newMode);
+  }, [theme.mode, handleSetMode]);
 
-  const value: ThemeContextValue = {
+  const value: ThemeContextValueInternal = {
     theme,
     mode,
-    setMode,
+    setMode: handleSetMode,
     toggle,
     isDark,
     isLight,
@@ -60,18 +79,22 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   );
 };
 
-export const useTheme = (): Theme => {
+// Hook for full theme context
+export function useThemeContext(): ThemeContextValueInternal {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context.theme;
-};
-
-export const useThemeMode = () => {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useThemeMode must be used within a ThemeProvider');
+    throw new Error('useThemeContext must be used within a ThemeProvider');
   }
   return context;
+}
+
+// Backward compatible hook - returns just theme
+export const useTheme = (): Theme => {
+  const { theme } = useThemeContext();
+  return theme;
+};
+
+// Backward compatible hook - returns mode context
+export const useThemeMode = (): ThemeContextValueInternal => {
+  return useThemeContext();
 };
