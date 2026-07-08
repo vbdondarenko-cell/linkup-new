@@ -81,7 +81,7 @@ export class ReportHandler {
   }
 
   private determineRecommendedAction(urgency: number, reason: ReportReason): ReportAction {
-    if (urgency >= 0.8 || reason === 'dangerous_behavior') {
+    if (urgency >= 0.8 || reason === 'dangerous' || reason === 'scam') {
       return 'escalate';
     }
     if (urgency >= 0.5) {
