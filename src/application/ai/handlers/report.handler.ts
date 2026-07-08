@@ -1,7 +1,7 @@
 import { EntityId } from '../../../domain/shared/types';
 import { ReportEntity } from '../../../domain/ai/entities/report';
 import { ReportDTO, CreateReportDTO } from '../dto/ai.dto';
-import { ReportReason, ReportTarget } from '../../../domain/ai/types';
+import { ReportReason, ReportTarget, ReportAction } from '../../../domain/ai/types';
 
 export class ReportHandler {
   async createReport(data: CreateReportDTO, reporterId: EntityId): Promise<ReportEntity> {
@@ -80,14 +80,14 @@ export class ReportHandler {
     return 0;
   }
 
-  private determineRecommendedAction(urgency: number, reason: ReportReason): string {
-    if (urgency >= 0.8 || reason === 'dangerous') {
+  private determineRecommendedAction(urgency: number, reason: ReportReason): ReportAction {
+    if (urgency >= 0.8 || reason === 'dangerous_behavior') {
       return 'escalate';
     }
     if (urgency >= 0.5) {
-      return 'review';
+      return 'warn';
     }
-    return 'monitor';
+    return 'dismiss';
   }
 
   toDTO(report: ReportEntity): ReportDTO {
