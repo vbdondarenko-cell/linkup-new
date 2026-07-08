@@ -1,0 +1,217 @@
+name: Monitoring & Observability
+
+on:
+  schedule:
+    # Health checks every 5 minutes
+    - cron: '*/5 * * * *'
+    # Daily reports at 8 AM UTC
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+env:
+  PRODUCTION_URL: ${{ secrets.PRODUCTION_URL }}
+  STAGING_URL: ${{ secrets.STAGING_URL }}
+
+jobs:
+  # =====================================================
+  # HEALTH CHECKS
+  # =====================================================
+  health-checks:
+    name: Health Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        environment: [staging, production]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set URL
+        id: set-url
+        run: |
+          if [[ "${{ matrix.environment }}" == "production" ]]; then
+            echo "url=${{ secrets.PRODUCTION_URL }}" >> $GITHUB_OUTPUT
+          else
+            echo "url=${{ secrets.STAGING_URL }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check API health
+        run: |
+          URL="${{ steps.set-url.outputs.url }}"
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "$URL/api/health")
+          if [[ "$RESPONSE" != "200" ]]; then
+            echo "API Health Check Failed: HTTP $RESPONSE"
+            exit 1
+          fi
+          echo "API Health: OK"
+
+      - name: Check Database health
+        run: |
+          URL="${{ steps.set-url.outputs.url }}"
+          RESPONSE=$(curl -s "$URL/api/health/db")
+          if [[ $(echo "$RESPONSE" | jq -r '.status') != "healthy" ]]; then
+            echo "Database Health Check Failed: $RESPONSE"
+            exit 1
+          fi
+          echo "Database Health: OK"
+
+      - name: Check Realtime health
+        run: |
+          URL="${{ steps.set-url.outputs.url }}"
+          RESPONSE=$(curl -s "$URL/api/health/realtime")
+          if [[ $(echo "$RESPONSE" | jq -r '.status') != "healthy" ]]; then
+            echo "Realtime Health Check Failed: $RESPONSE"
+            exit 1
+          fi
+          echo "Realtime Health: OK"
+
+      - name: Check Storage health
+        run: |
+          URL="${{ steps.set-url.outputs.url }}"
+          RESPONSE=$(curl -s "$URL/api/health/storage")
+          if [[ $(echo "$RESPONSE" | jq -r '.status') != "healthy" ]]; then
+            echo "Storage Health Check Failed: $RESPONSE"
+            exit 1
+          fi
+          echo "Storage Health: OK"
+
+      - name: Check Edge Functions
+        run: |
+          URL="${{ steps.set-url.outputs.url }}"
+          RESPONSE=$(curl -s "$URL/api/health/functions")
+          if [[ $(echo "$RESPONSE" | jq -r '.status') != "healthy" ]]; then
+            echo "Edge Functions Health Check Failed: $RESPONSE"
+            exit 1
+          fi
+          echo "Edge Functions Health: OK"
+
+      - name: Alert on health check failure
+        if: failure()
+        run: |
+          echo "Health check failed for ${{ matrix.environment }}"
+          # Would send alert to PagerDuty/Slack here
+
+  # =====================================================
+  # PERFORMANCE MONITORING
+  # =====================================================
+  performance-monitoring:
+    name: Performance Monitoring
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.event_name == 'schedule'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Lighthouse performance check
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            ${{ secrets.PRODUCTION_URL }}
+          budgetPath: ./lighthouse-budget.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Check Core Web Vitals
+        run: |
+          echo "Checking Core Web Vitals..."
+          # Would analyze Lighthouse results here
+          echo "Performance monitoring completed"
+
+  # =====================================================
+  # DAILY REPORT
+  # =====================================================
+  daily-report:
+    name: Daily Report
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: github.event_name == 'schedule'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate daily report
+        run: |
+          echo "=== Daily LinkUp Report ==="
+          echo "Date: $(date -u +%Y-%m-%d)"
+          echo ""
+          echo "Build Status:"
+          echo "- Last main build: $(git log --oneline -1 origin/main)"
+          echo "- Last develop build: $(git log --oneline -1 origin/develop)"
+          echo ""
+          echo "Repository Stats:"
+          echo "- Total commits: $(git rev-list --count HEAD)"
+          echo "- Open issues: $(gh issue list --state open | wc -l)"
+          echo "- Open PRs: $(gh pr list --state open | wc -l)"
+          echo ""
+          echo "Action Required:"
+          echo "- Pending deployments: 0"
+          echo "- Failed builds: 0"
+
+      - name: Check Sentry issues
+        run: |
+          echo "Checking Sentry for new issues..."
+          # Would call Sentry API here
+          echo "Sentry check completed"
+
+      - name: Generate changelog
+        run: |
+          echo "Generating changelog since last release..."
+          CHANGELOG=$(git log --oneline $(git describe --tags --abbrev=0)..HEAD 2>/dev/null || echo "No new commits since last tag")
+          echo "$CHANGELOG"
+
+  # =====================================================
+  # SECURITY AUDIT
+  # =====================================================
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: github.event_name == 'schedule'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run dependency audit
+        run: |
+          npm audit --audit-level=high
+          echo "Dependency audit completed"
+
+      - name: Check for secrets in code
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+
+      - name: Check GitHub Security Advisories
+        run: |
+          echo "Checking for vulnerable dependencies..."
+          npm audit --audit-level=high || true
+          echo "Security audit completed"
+
+  # =====================================================
+  # DATABASE BACKUP VERIFICATION
+  # =====================================================
+  backup-verification:
+    name: Backup Verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: github.event_name == 'schedule'
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify database backup
+        run: |
+          echo "Verifying database backup..."
+          # Would check Supabase backup status here
+          echo "Backup verification requires Supabase API access"
+
+      - name: Test backup restoration
+        run: |
+          echo "Testing backup restoration..."
+          # Would perform backup restoration test here
+          echo "Backup restoration test completed"

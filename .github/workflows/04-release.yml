@@ -1,0 +1,263 @@
+name: Release Management
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 1.0.0)'
+        required: true
+        type: string
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  # =====================================================
+  # RELEASE PREPARATION
+  # =====================================================
+  release-prep:
+    name: Release Preparation
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      is_prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version
+        id: version
+        run: |
+          if [[ "${{ github.event.inputs.version }}" != "" ]]; then
+            VERSION="${{ github.event.inputs.version }}"
+          elif [[ "${{ github.ref }}" =~ ^refs/tags/v ]]; then
+            VERSION="${GITHUB_REF#refs/tags/v}"
+          else
+            echo "No version specified"
+            exit 1
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          if [[ "$VERSION" == *"-"* ]]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate version format
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
+            echo "Invalid version format: $VERSION"
+            exit 1
+          fi
+          echo "Version format validated: $VERSION"
+
+      - name: Check for existing tag
+        run: |
+          if git tag | grep -q "^v${{ steps.version.outputs.version }}$"; then
+            echo "Tag v${{ steps.version.outputs.version }} already exists"
+            exit 1
+          fi
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          CHANGELOG=$(cat << 'EOF'
+          # Changelog
+          
+          ## ${{ steps.version.outputs.version }}
+          
+          ### Features
+          $(git log --oneline --grep="feat" --since="$(git describe --tags --abbrev=0 2>/dev/null || echo HEAD)" --format="  - %s")
+          
+          ### Bug Fixes
+          $(git log --oneline --grep="fix" --since="$(git describe --tags --abbrev=0 2>/dev/null || echo HEAD)" --format="  - %s")
+          
+          ### Improvements
+          $(git log --oneline --grep="improvement\|refactor\|perf" --since="$(git describe --tags --abbrev=0 2>/dev/null || echo HEAD)" --format="  - %s")
+          
+          ### Documentation
+          $(git log --oneline --grep="docs" --since="$(git describe --tags --abbrev=0 2>/dev/null || echo HEAD)" --format="  - %s")
+          EOF
+          )
+          echo "$CHANGELOG"
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Check milestone
+        run: |
+          echo "Checking milestone for v${{ steps.version.outputs.version }}..."
+          # Would check GitHub milestone here
+
+  # =====================================================
+  # BUILD RELEASE
+  # =====================================================
+  build-release:
+    name: Build Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: release-prep
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+
+      - name: Generate release artifacts
+        run: |
+          mkdir -p release
+          tar -czf release/linkup-${{ needs.release-prep.outputs.version }}.tar.gz .next/
+          tar -czf release/linkup-${{ needs.release-prep.outputs.version }}-types.tar.gz supabase/types/
+          cp package.json release/
+          cp package-lock.json release/ 2>/dev/null || true
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts-${{ needs.release-prep.outputs.version }}
+          path: release/
+          retention-days: 30
+
+  # =====================================================
+  # RUN TESTS FOR RELEASE
+  # =====================================================
+  release-tests:
+    name: Release Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [release-prep, build-release]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts-${{ needs.release-prep.outputs.version }}
+          path: .
+
+      - name: Run full test suite
+        run: npm run test:all -- --ci
+
+      - name: Run E2E tests
+        run: npm run test:e2e -- --ci
+
+  # =====================================================
+  # CREATE RELEASE
+  # =====================================================
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [release-prep, release-tests]
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts-${{ needs.release-prep.outputs.version }}
+          path: release/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ needs.release-prep.outputs.version }}
+          name: Release ${{ needs.release-prep.outputs.version }}
+          body: |
+            ## Release ${{ needs.release-prep.outputs.version }}
+            
+            ### What's Changed
+            
+            ${{ needs.release-prep.outputs.changelog }}
+            
+            ### Installation
+            
+            Download the release artifacts and follow the deployment guide.
+          draft: false
+          prerelease: ${{ needs.release-prep.outputs.is_prerelease }}
+          files: |
+            release/*
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release Notes PR
+        if: false
+        run: |
+          echo "Would create PR for release notes"
+
+  # =====================================================
+  # DEPLOY RELEASE
+  # =====================================================
+  deploy-release:
+    name: Deploy Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: create-release
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: refs/tags/v${{ needs.create-release.outputs.version }}
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts-${{ needs.create-release.outputs.version }}
+          path: .
+
+      - name: Deploy to Production
+        uses: render/deploy-to-render@v1
+        with:
+          render-token: ${{ secrets.RENDER_API_KEY }}
+          service-id: ${{ secrets.RENDER_PRODUCTION_SERVICE_ID }}
+          environment-id: ${{ secrets.RENDER_PRODUCTION_ENV_ID }}
+          wait-for-success: true
+
+      - name: Verify deployment
+        run: |
+          echo "Verifying release deployment..."
+          sleep 10
+          curl -f -s "${{ secrets.PRODUCTION_URL }}/api/health" || exit 1
+
+      - name: Notify successful deployment
+        if: success()
+        run: |
+          echo "Release ${{ needs.create-release.outputs.version }} deployed successfully!"
+          echo "Production URL: ${{ secrets.PRODUCTION_URL }}"

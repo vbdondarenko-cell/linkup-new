@@ -1,0 +1,96 @@
+{
+  "ci": {
+    "collect": {
+      "startServerCommand": "npm run start",
+      "startServerReadyPattern": "Ready",
+      "startServerReadyTimeout": 30000
+    },
+    "assert": {
+      "lighthouse-version": "9.6.x",
+      "performance-budget": [
+        {
+          "resourceSizes": [
+            {
+              "resourceType": "total",
+              "budget": 500
+            },
+            {
+              "resourceType": "script",
+              "budget": 150
+            },
+            {
+              "resourceType": "css",
+              "budget": 50
+            },
+            {
+              "resourceType": "image",
+              "budget": 150
+            },
+            {
+              "resourceType": "font",
+              "budget": 30
+            }
+          ],
+          "resourceCounts": [
+            {
+              "resourceType": "third-party",
+              "budget": 10
+            }
+          ]
+        }
+      ],
+      "categories": {
+        "performance": {
+          "score": 0.8
+        },
+        "accessibility": {
+          "score": 0.9
+        },
+        "best-practices": {
+          "score": 0.9
+        },
+        "seo": {
+          "score": 0.9
+        },
+        "pwa": {
+          "score": 0.7
+        }
+      },
+      "metrics": [
+        {
+          "id": "first-contentful-paint",
+          "Budget": 2000
+        },
+        {
+          "id": "largest-contentful-paint",
+          "Budget": 2500
+        },
+        {
+          "id": "first-input-delay",
+          "Budget": 100
+        },
+        {
+          "id": "cumulative-layout-shift",
+          "Budget": 0.1
+        },
+        {
+          "id": "speed-index",
+          "Budget": 4000
+        },
+        {
+          "id": "total-blocking-time",
+          "Budget": 300
+        },
+        {
+          "id": "interactive",
+          "Budget": 5000
+        }
+      ]
+    },
+    "upload": {
+      "target": "lhci",
+      "serverBaseUrl": "${LHCI_SERVER_URL}",
+      "token": "${LHCI_BUILD_TOKEN}"
+    }
+  }
+}

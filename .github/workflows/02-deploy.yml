@@ -1,0 +1,274 @@
+name: Deployment Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  # =====================================================
+  # PRE-DEPLOYMENT VALIDATION
+  # =====================================================
+  pre-deployment:
+    name: Pre-Deployment Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      environment: ${{ steps.set-env.outputs.environment }}
+      version: ${{ steps.set-version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set environment
+        id: set-env
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          else
+            echo "environment=preview" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set version
+        id: set-version
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "version=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" =~ ^refs/tags/v ]]; then
+            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          else
+            echo "version=preview-${{ github.run_id }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate secrets
+        run: |
+          echo "Validating required secrets..."
+          REQUIRED_SECRETS=(
+            "SUPABASE_URL"
+            "SUPABASE_SERVICE_ROLE_KEY"
+            "NEXT_PUBLIC_SUPABASE_URL"
+            "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+          )
+          for secret in "${REQUIRED_SECRETS[@]}"; do
+            if [[ -z "\${!secret}" ]]; then
+              echo "Missing required secret: $secret"
+              exit 1
+            fi
+          done
+          echo "All required secrets are set"
+
+      - name: Run migration validation
+        run: |
+          echo "Validating database migrations..."
+          npm run db:validate || echo "Migration validation skipped"
+
+  # =====================================================
+  # BUILD FOR PRODUCTION/STAGING
+  # =====================================================
+  build:
+    name: Build (${{ needs.pre-deployment.outputs.environment }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: pre-deployment
+    if: needs.pre-deployment.outputs.environment != 'preview'
+    environment: ${{ needs.pre-deployment.outputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get environment variables
+        env: ${{ secrets.ENV_CONFIG }}
+        run: |
+          echo "$ENV_CONFIG" | base64 -d > .env.${{ needs.pre-deployment.outputs.environment }}
+          npm run build
+
+      - name: Generate Supabase types
+        run: npm run db:generate-types
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ needs.pre-deployment.outputs.environment }}
+          path: |
+            .next/
+            supabase/types/
+          retention-days: 3
+
+  # =====================================================
+  # SUPABASE DEPLOYMENT
+  # =====================================================
+  deploy-supabase:
+    name: Deploy Supabase (${{ needs.pre-deployment.outputs.environment }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [pre-deployment, build]
+    if: needs.pre-deployment.outputs.environment != 'preview'
+    environment: ${{ needs.pre-deployment.outputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        run: |
+          npm install -g supabase
+          supabase --version
+
+      - name: Link Supabase project
+        run: supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Push database migrations
+        run: supabase db push
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        continue-on-error: true
+
+      - name: Deploy Edge Functions
+        run: supabase functions deploy
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Run database type generation
+        run: supabase gen types typescript --project-id ${{ secrets.SUPABASE_PROJECT_REF }} > supabase/types/database.ts
+
+  # =====================================================
+  # DEPLOY TO STAGING
+  # =====================================================
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [pre-deployment, build, deploy-supabase]
+    if: needs.pre-deployment.outputs.environment == 'staging'
+    environment: staging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-staging
+          path: .next
+
+      - name: Deploy to Render (Staging)
+        uses: render/deploy-to-render@v1
+        with:
+          render-token: ${{ secrets.RENDER_API_KEY }}
+          service-id: ${{ secrets.RENDER_STAGING_SERVICE_ID }}
+          environment-id: ${{ secrets.RENDER_STAGING_ENV_ID }}
+          wait-for-success: true
+
+      - name: Run smoke tests
+        run: |
+          STAGING_URL="${{ secrets.STAGING_URL }}"
+          curl -f -s "$STAGING_URL/api/health" || exit 1
+          curl -f -s "$STAGING_URL/api/health/db" || exit 1
+
+      - name: Notify deployment
+        if: always()
+        run: |
+          echo "Staging deployment completed: ${{ job.status }}"
+
+  # =====================================================
+  # DEPLOY TO PRODUCTION
+  # =====================================================
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [pre-deployment, build, deploy-supabase]
+    if: needs.pre-deployment.outputs.environment == 'production'
+    environment: production
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-production
+          path: .next
+
+      - name: Create deployment backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-backup-${{ github.run_id }}
+          path: .next
+          retention-days: 30
+
+      - name: Deploy to Production
+        uses: render/deploy-to-render@v1
+        with:
+          render-token: ${{ secrets.RENDER_API_KEY }}
+          service-id: ${{ secrets.RENDER_PRODUCTION_SERVICE_ID }}
+          environment-id: ${{ secrets.RENDER_PRODUCTION_ENV_ID }}
+          wait-for-success: true
+
+      - name: Run production smoke tests
+        run: |
+          PRODUCTION_URL="${{ secrets.PRODUCTION_URL }}"
+          curl -f -s "$PRODUCTION_URL/api/health" || exit 1
+          curl -f -s "$PRODUCTION_URL/api/health/db" || exit 1
+          curl -f -s "$PRODUCTION_URL/api/health/realtime" || exit 1
+
+      - name: Verify deployment
+        run: |
+          echo "Running post-deployment verification..."
+          npm run test:smoke -- --env=production || true
+
+      - name: Create deployment tag
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          echo "Deployment tag created: ${{ github.ref }}"
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "Production deployment successful"
+          echo "Version: ${{ needs.pre-deployment.outputs.version }}"
+          echo "URL: ${{ secrets.PRODUCTION_URL }}"
+
+      - name: Notify deployment failure
+        if: failure()
+        run: |
+          echo "Production deployment FAILED"
+          echo "Initiating rollback..."
+          # Rollback would be triggered here

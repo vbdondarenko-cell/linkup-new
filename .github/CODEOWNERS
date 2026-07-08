@@ -1,0 +1,30 @@
+# CODEOWNERS - LinkUp Repository
+
+# Default owners for everything
+* @vbdondarenko-cell
+
+# Frontend
+/src/features/ @vbdondarenko-cell @frontend-team
+/src/ui/ @vbdondarenko-cell @frontend-team
+
+# Backend
+/src/application/ @vbdondarenko-cell @backend-team
+/src/domain/ @vbdondarenko-cell @backend-team
+
+# AI
+/src/domain/ai/ @vbdondarenko-cell @ai-team
+/src/application/ai/ @vbdondarenko-cell @ai-team
+
+# Infrastructure
+/infrastructure/ @vbdondarenko-cell @devops-team
+/.github/ @vbdondarenko-cell @devops-team
+/supabase/ @vbdondarenko-cell @devops-team
+
+# Documentation
+/docs/ @vbdondarenko-cell @docs-team
+
+# CI/CD
+/.github/workflows/ @vbdondarenko-cell @devops-team
+
+# Configuration
+*.config.* @vbdondarenko-cell @devops-team
