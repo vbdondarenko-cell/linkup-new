@@ -77,7 +77,6 @@
     "axe-playwright": "^2.0.0",
     "lighthouse": "^12.2.0",
     "@lhci/cli": "^0.14.0",
-    "k6": "^0.52.0",
     "supertest": "^7.0.0",
     "@types/supertest": "^6.0.0",
     "madge": "^7.0.0",
