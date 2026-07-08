@@ -1,3 +1,34 @@
-// Components barrel export
-export * from './base/base-components';
-export * from './layouts';
+/**
+ * LinkUp Design System 2026
+ * Components Module - Main exports
+ */
+
+// Buttons
+export * from './buttons';
+
+// Inputs
+export * from './inputs';
+
+// Cards
+export * from './cards';
+
+// Avatars
+export * from './avatars';
+
+// Badges
+export * from './badges';
+
+// Chips
+export * from './chips';
+
+// Dividers
+export * from './dividers';
+
+// Progress
+export * from './progress';
+
+// Lists
+export * from './lists';
+
+// Feedback (Toast, Modal)
+export * from './feedback';
