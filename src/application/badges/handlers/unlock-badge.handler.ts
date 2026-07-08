@@ -1,4 +1,4 @@
-import { UnlockBadgeRequest } from '../dto/badge.dto';
+import { UnlockBadgeRequest, BadgeResponse } from '../dto/badge.dto';
 import { UserBadge } from '../../../domain/badges/entities/badge';
 import { IBadgeRepository } from '../../../domain/badges/repositories/i-badge-repository';
 import { IEventDispatcher } from '../../shared/dispatcher/event-dispatcher';
