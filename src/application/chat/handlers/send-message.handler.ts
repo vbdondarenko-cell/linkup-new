@@ -50,7 +50,7 @@ export class SendMessageHandler {
         type: message.type,
         content: message.content,
         metadata: message.metadata || undefined,
-        replyToId: message.replyToId,
+        replyToId: message.replyToId || undefined,
         isEdited: message.isEdited,
         createdAt: message.createdAt.toISOString(),
       },
