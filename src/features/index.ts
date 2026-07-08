@@ -4,3 +4,4 @@
 export * from './home';
 export * from './organizer';
 export * from './business';
+export * from './premium';
