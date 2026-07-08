@@ -1,6 +1,6 @@
-import { SendMessageRequest } from '../dto/chat.dto';
+import { SendMessageRequest, MessageResponse } from '../dto/chat.dto';
 import { Message } from '../../../domain/chat/entities/message';
-import { IMessageRepository } from '../../../domain/chat/repositories/i-conversation-repository';
+import { IMessageRepository } from '../../../domain/chat/repositories/i-message-repository';
 import { IConversationRepository } from '../../../domain/chat/repositories/i-conversation-repository';
 import { IEventDispatcher } from '../../shared/dispatcher/event-dispatcher';
 import { MessageSent } from '../../../domain/shared/events/domain-events';
