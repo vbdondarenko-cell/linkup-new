@@ -6,3 +6,4 @@ export * from './organizer';
 export * from './business';
 export * from './premium';
 export * from './settings';
+export * from './auth';
