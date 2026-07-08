@@ -49,7 +49,7 @@ export class SendMessageHandler {
         senderId: message.senderId,
         type: message.type,
         content: message.content,
-        metadata: message.metadata,
+        metadata: message.metadata || undefined,
         replyToId: message.replyToId,
         isEdited: message.isEdited,
         createdAt: message.createdAt.toISOString(),
