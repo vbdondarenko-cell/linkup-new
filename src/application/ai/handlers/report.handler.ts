@@ -1,7 +1,7 @@
-import { EntityId } from '../../shared/types';
-import { ReportEntity } from '../../domain/ai/entities/report';
+import { EntityId } from '../../../domain/shared/types';
+import { ReportEntity } from '../../../domain/ai/entities/report';
 import { ReportDTO, CreateReportDTO } from '../dto/ai.dto';
-import { ReportReason, ReportTarget } from '../../domain/ai/types';
+import { ReportReason, ReportTarget } from '../../../domain/ai/types';
 
 export class ReportHandler {
   async createReport(data: CreateReportDTO, reporterId: EntityId): Promise<ReportEntity> {

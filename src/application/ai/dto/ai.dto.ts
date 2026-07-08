@@ -1,11 +1,11 @@
-import { EntityId } from '../../shared/types';
+import { EntityId } from '../../../domain/shared/types';
 import { 
   ReportReason, 
   ReportTarget, 
   ContentType, 
   RiskLevel,
   TrustLevel 
-} from '../../domain/ai/types';
+} from '../../../domain/ai/types';
 
 // Trust DTOs
 export interface TrustScoreDTO {

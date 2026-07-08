@@ -1,8 +1,8 @@
-import { EntityId } from '../../shared/types';
-import { ContentModerationService } from '../../domain/ai/services/content-moderation';
-import { ModerationResultEntity } from '../../domain/ai/entities/moderation-result';
+import { EntityId } from '../../../domain/shared/types';
+import { ContentModerationService } from '../../../domain/ai/services/content-moderation';
+import { ModerationResultEntity } from '../../../domain/ai/entities/moderation-result';
 import { ContentModerationRequestDTO, ContentModerationResultDTO } from '../dto/ai.dto';
-import { ContentType } from '../../domain/ai/types';
+import { ContentType } from '../../../domain/ai/types';
 
 export class ModerationHandler {
   constructor(private readonly moderationService: ContentModerationService) {}
