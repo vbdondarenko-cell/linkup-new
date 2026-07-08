@@ -1,6 +1,6 @@
 import { EntityId, Timestamp } from '../../shared/types';
 
-export type MessageType = 'text' | 'image' | 'location' | 'event' | 'system';
+export type MessageType = 'text' | 'image' | 'location' | 'file' | 'event' | 'system';
 
 export interface MessageMetadata {
   latitude?: number;
