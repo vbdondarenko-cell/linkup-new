@@ -1,6 +1,6 @@
 /**
  * LinkUp Design System 2026
- * Chat List - Premium conversation list
+ * Chat List - Premium conversation list as Event Cards
  */
 
 'use client';
@@ -20,12 +20,12 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   FadeIn,
+  Layout,
 } from 'react-native-reanimated';
 import { useTheme } from '../../../ui/providers/theme-provider';
 import { useHaptics } from '../../../ui/hooks/use-haptics';
 import { spacing } from '../../../ui/tokens/spacing';
 import { fontSize, fontWeight } from '../../../ui/tokens/typography';
-import { Avatar } from '../../../ui/components/avatars';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -52,6 +52,8 @@ export interface ChatItem {
   eventStartsAt?: Date;
   eventEndsAt?: Date;
   distance?: string;
+  category?: string;
+  categoryIcon?: string;
 }
 
 interface ChatListProps {
@@ -95,6 +97,11 @@ const formatTime = (date: Date): string => {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
 
+// Format event time
+const formatEventTime = (date: Date): string => {
+  return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+};
+
 // Status Badge Component
 interface StatusBadgeProps {
   status: ChatStatus;
@@ -130,15 +137,8 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, countdown }) => {
   );
 };
 
-// Chat Item Component
-interface ChatItemProps {
-  chat: ChatItem;
-  onPress?: () => void;
-  onEventPress?: () => void;
-  onOrganizerPress?: () => void;
-}
-
-const ChatItem: React.FC<ChatItemProps> = ({
+// Event Card Style Chat Item
+const EventCardChatItem: React.FC<ChatItemProps> = ({
   chat,
   onPress,
   onEventPress,
@@ -149,6 +149,7 @@ const ChatItem: React.FC<ChatItemProps> = ({
   const scale = useSharedValue(1);
   
   const countdown = chat.countdownEndsAt ? formatCountdown(chat.countdownEndsAt) : undefined;
+  const isExpired = chat.status === 'expired' || chat.status === 'deleted';
   
   const handlePressIn = () => {
     scale.value = withSpring(0.98, { damping: 15, stiffness: 300 });
@@ -167,156 +168,141 @@ const ChatItem: React.FC<ChatItemProps> = ({
     transform: [{ scale: scale.value }],
   }));
   
-  const isExpired = chat.status === 'expired' || chat.status === 'deleted';
-  
   return (
     <AnimatedPressable
       onPress={handlePress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
+      layout={Layout.springify()}
       style={[
-        styles.chatItem,
+        styles.eventCard,
         {
           backgroundColor: theme.colors.surface.primary,
+          borderColor: theme.colors.border.default,
           opacity: isExpired ? 0.6 : 1,
         },
         animatedStyle,
       ]}
     >
-      {/* Event Image */}
-      <Pressable onPress={onEventPress} style={styles.imageContainer}>
-        {chat.eventImage ? (
-          <Image
-            source={{ uri: chat.eventImage }}
-            style={styles.eventImage}
-          />
-        ) : (
-          <View style={[styles.imagePlaceholder, { backgroundColor: theme.colors.surface.secondary }]}>
-            <Text style={styles.placeholderIcon}>📅</Text>
+      {/* Hero Image */}
+      <Pressable onPress={onEventPress}>
+        <View style={styles.heroImageContainer}>
+          {chat.eventImage ? (
+            <Image
+              source={{ uri: chat.eventImage }}
+              style={styles.heroImage}
+            />
+          ) : (
+            <View style={[styles.heroImagePlaceholder, { backgroundColor: theme.colors.surface.secondary }]}>
+              <Text style={styles.heroPlaceholderIcon}>📅</Text>
+            </View>
+          )}
+          
+          {/* Category Badge */}
+          {chat.categoryIcon && (
+            <View style={[styles.categoryBadge, { backgroundColor: theme.colors.surface.primary }]}>
+              <Text style={styles.categoryIcon}>{chat.categoryIcon}</Text>
+              <Text style={[styles.categoryText, { color: theme.colors.text.secondary }]}>
+                {chat.category}
+              </Text>
+            </View>
+          )}
+          
+          {/* Status Badge */}
+          <View style={styles.statusBadgeContainer}>
+            <StatusBadge status={chat.status} countdown={countdown} />
           </View>
-        )}
-        
-        {/* Participant Count */}
-        <View style={[styles.participantBadge, { backgroundColor: theme.colors.interactive.primary }]}>
-          <Text style={styles.participantCount}>{chat.participantCount}</Text>
         </View>
       </Pressable>
       
-      {/* Content */}
-      <View style={styles.content}>
-        {/* Header Row */}
-        <View style={styles.headerRow}>
-          <Text
-            style={[
-              styles.eventName,
-              { color: theme.colors.text.primary },
-            ]}
-            numberOfLines={1}
-          >
-            {chat.eventName}
-          </Text>
-          {chat.lastMessage && (
-            <Text
-              style={[
-                styles.timestamp,
-                { color: theme.colors.text.tertiary },
-              ]}
-            >
-              {formatTime(chat.lastMessage.timestamp)}
-            </Text>
+      {/* Card Content */}
+      <View style={styles.cardContent}>
+        {/* Title */}
+        <Text
+          style={[styles.cardTitle, { color: theme.colors.text.primary }]}
+          numberOfLines={1}
+        >
+          {chat.eventName}
+        </Text>
+        
+        {/* Event Info Row */}
+        <View style={styles.eventInfoRow}>
+          {chat.eventStartsAt && (
+            <View style={styles.eventInfoItem}>
+              <Text style={styles.eventInfoIcon}>🕐</Text>
+              <Text style={[styles.eventInfoText, { color: theme.colors.text.secondary }]}>
+                {formatEventTime(chat.eventStartsAt)}
+              </Text>
+            </View>
           )}
+          {chat.distance && (
+            <View style={styles.eventInfoItem}>
+              <Text style={styles.eventInfoIcon}>📍</Text>
+              <Text style={[styles.eventInfoText, { color: theme.colors.text.secondary }]}>
+                {chat.distance}
+              </Text>
+            </View>
+          )}
+          <View style={styles.eventInfoItem}>
+            <Text style={styles.eventInfoIcon}>👥</Text>
+            <Text style={[styles.eventInfoText, { color: theme.colors.text.secondary }]}>
+              {chat.participantCount}
+            </Text>
+          </View>
         </View>
         
-        {/* Organizer Row */}
+        {/* Organizer */}
         <Pressable onPress={onOrganizerPress} style={styles.organizerRow}>
-          <Avatar
-            src={chat.organizerAvatar}
-            name={chat.organizerName}
-            size="xs"
-          />
+          <Text style={styles.organizerIcon}>👤</Text>
           <Text
-            style={[
-              styles.organizerName,
-              { color: theme.colors.text.secondary },
-            ]}
+            style={[styles.organizerName, { color: theme.colors.text.tertiary }]}
             numberOfLines={1}
           >
             {chat.organizerName}
           </Text>
         </Pressable>
         
-        {/* Message Row */}
-        <View style={styles.messageRow}>
+        {/* Message Preview */}
+        <View style={[styles.messagePreview, { borderTopColor: theme.colors.border.default }]}>
           {chat.lastMessage ? (
-            <Text
-              style={[
-                styles.lastMessage,
-                {
-                  color: chat.lastMessage.isRead
-                    ? theme.colors.text.tertiary
-                    : theme.colors.text.primary,
-                  fontWeight: chat.lastMessage.isRead ? 'normal' : '500',
-                },
-              ]}
-              numberOfLines={1}
-            >
-              <Text style={styles.senderName}>{chat.lastMessage.senderName}: </Text>
-              {chat.lastMessage.text}
-            </Text>
+            <View style={styles.messageContent}>
+              <Text style={styles.messageSender}>{chat.lastMessage.senderName}</Text>
+              <Text
+                style={[
+                  styles.messageText,
+                  {
+                    color: chat.lastMessage.isRead
+                      ? theme.colors.text.tertiary
+                      : theme.colors.text.primary,
+                  },
+                ]}
+                numberOfLines={1}
+              >
+                {chat.lastMessage.text}
+              </Text>
+            </View>
           ) : (
-            <Text
-              style={[
-                styles.noMessages,
-                { color: theme.colors.text.tertiary },
-              ]}
-            >
-              No messages yet
+            <Text style={[styles.noMessages, { color: theme.colors.text.tertiary }]}>
+              No messages yet - start the conversation!
             </Text>
           )}
           
           {/* Unread Badge */}
           {chat.unreadCount > 0 && (
             <View
-              style={[
-                styles.unreadBadge,
-                { backgroundColor: theme.colors.interactive.primary },
-              ]}
+              style={[styles.unreadBadge, { backgroundColor: theme.colors.interactive.primary }]}
             >
-              <Text style={styles.unreadCount}>
-                {chat.unreadCount > 99 ? '99+' : chat.unreadCount}
-              </Text>
+              <Text style={styles.unreadCount}>{chat.unreadCount}</Text>
             </View>
-          )}
-        </View>
-        
-        {/* Status Row */}
-        <View style={styles.statusRow}>
-          <StatusBadge status={chat.status} countdown={countdown} />
-          {chat.distance && (
-            <Text
-              style={[
-                styles.distance,
-                { color: theme.colors.text.tertiary },
-              ]}
-            >
-              📍 {chat.distance}
-            </Text>
-          )}
-          {chat.eventStartsAt && (
-            <Text
-              style={[
-                styles.eventTime,
-                { color: theme.colors.text.tertiary },
-              ]}
-            >
-              🕐 {chat.eventStartsAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-            </Text>
           )}
         </View>
       </View>
     </AnimatedPressable>
   );
 };
+
+// Alias for compatibility
+const ChatItem = EventCardChatItem;
 
 // Main Chat List Component
 export const ChatList: React.FC<ChatListProps> = ({
@@ -496,6 +482,79 @@ const styles = StyleSheet.create({
     height: 1,
     marginLeft: spacing[4] + 56 + spacing[3],
   },
+},
+
+  // Event Card Styles
+  eventCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    overflow: 'hidden',
+    marginBottom: spacing[4],
+  },
+  heroImageContainer: {
+    position: 'relative',
+    height: 120,
+  },
+  heroImage: {
+    width: '100%',
+    height: '100%',
+  },
+  heroImagePlaceholder: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  heroPlaceholderIcon: {
+    fontSize: 40,
+    opacity: 0.5,
+  },
+  cardContent: {
+    padding: spacing[3],
+  },
+  cardTitle: {
+    fontSize: 17,
+    fontWeight: fontWeight.semibold,
+    marginBottom: spacing[2],
+  },
+  eventInfoRow: {
+    flexDirection: 'row',
+    gap: spacing[4],
+    marginBottom: spacing[2],
+  },
+  eventInfoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  eventInfoIcon: {
+    fontSize: 13,
+    marginRight: spacing[1],
+  },
+  eventInfoText: {
+    fontSize: 13,
+  },
+  messagePreview: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: spacing[3],
+    marginTop: spacing[2],
+    borderTopWidth: 1,
+  },
+  messageContent: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  messageSender: {
+    fontSize: 13,
+    fontWeight: '500',
+    marginRight: spacing[1],
+  },
+  messageText: {
+    flex: 1,
+    fontSize: 14,
+  },
+  
 });
 
 ChatList.displayName = 'ChatList';
