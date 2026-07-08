@@ -8,3 +8,4 @@ export * from './premium';
 export * from './settings';
 export * from './auth';
 export * from './discovery';
+export * from './realtime';
