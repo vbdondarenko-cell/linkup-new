@@ -7,3 +7,4 @@ export * from './business';
 export * from './premium';
 export * from './settings';
 export * from './auth';
+export * from './discovery';
