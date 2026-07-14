@@ -482,8 +482,6 @@ const styles = StyleSheet.create({
     height: 1,
     marginLeft: spacing[4] + 56 + spacing[3],
   },
-},
-
   // Event Card Styles
   eventCard: {
     borderRadius: 16,
@@ -554,7 +552,33 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
   },
-  
+  noMessages: {
+    flex: 1,
+    fontSize: 14,
+    fontStyle: 'italic',
+  },
+  categoryBadge: {
+    position: 'absolute',
+    top: spacing[2],
+    left: spacing[2],
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: spacing[2],
+    paddingVertical: spacing[1],
+    borderRadius: 8,
+  },
+  categoryIcon: {
+    fontSize: 12,
+    marginRight: spacing[1],
+  },
+  categoryText: {
+    fontSize: 12,
+  },
+  statusBadgeContainer: {
+    position: 'absolute',
+    top: spacing[2],
+    right: spacing[2],
+  },
 });
 
 ChatList.displayName = 'ChatList';

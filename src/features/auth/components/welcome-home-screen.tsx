@@ -28,7 +28,7 @@ export const WelcomeHomeScreen: React.FC<WelcomeHomeScreenProps> = ({
   useEffect(() => {
     // Animate logo
     scale.value = withSequence(
-      withDelay(300, withTiming(1.2, { duration: 400, easing: Easing.out(Easing.back(1.5)) }),
+      withDelay(300, withTiming(1.2, { duration: 400, easing: Easing.out(Easing.back(1.5)) })),
       withTiming(1, { duration: 200 })
     );
     
