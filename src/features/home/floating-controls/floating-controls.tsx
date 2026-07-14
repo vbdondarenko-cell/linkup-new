@@ -12,9 +12,9 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import { useTheme } from '../../ui/providers/theme-provider';
-import { useHaptics } from '../../ui/hooks/use-haptics';
-import { spacing } from '../../ui/tokens/spacing';
+import { useTheme } from '../../../ui/providers/theme-provider';
+import { useHaptics } from '../../../ui/hooks/use-haptics';
+import { spacing } from '../../../ui/tokens/spacing';
 
 interface FloatingControlButtonProps {
   icon: string;

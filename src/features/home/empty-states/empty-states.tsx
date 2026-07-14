@@ -7,10 +7,10 @@
 
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-import { useTheme } from '../../ui/providers/theme-provider';
-import { spacing } from '../../ui/tokens/spacing';
-import { fontSize, fontWeight } from '../../ui/tokens/typography';
-import { Button } from '../../ui/components/buttons';
+import { useTheme } from '../../../ui/providers/theme-provider';
+import { spacing } from '../../../ui/tokens/spacing';
+import { fontSize, fontWeight } from '../../../ui/tokens/typography';
+import { Button } from '../../../ui/components/buttons';
 
 // ============================================
 // BASE EMPTY STATE

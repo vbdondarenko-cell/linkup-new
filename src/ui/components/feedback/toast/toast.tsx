@@ -14,10 +14,10 @@ import Animated, {
   withTiming,
   runOnJS,
 } from 'react-native-reanimated';
-import { useTheme } from '../../providers/theme-provider';
-import { useHaptics } from '../../hooks/use-haptics';
-import { spacing } from '../../tokens/spacing';
-import { fontSize, fontWeight } from '../../tokens/typography';
+import { useTheme } from '../../../providers/theme-provider';
+import { useHaptics } from '../../../hooks/use-haptics';
+import { spacing } from '../../../tokens/spacing';
+import { fontSize, fontWeight } from '../../../tokens/typography';
 
 export type ToastVariant = 'success' | 'error' | 'warning' | 'info' | 'premium';
 

@@ -3,6 +3,9 @@
  * Components Module - Main exports
  */
 
+// Base components
+export * from './base';
+
 // Buttons
 export * from './buttons';
 

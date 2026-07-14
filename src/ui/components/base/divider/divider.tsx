@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
-import { useTheme } from '../../providers/theme-provider';
+import { useTheme } from '../../../providers/theme-provider';
 
 export interface DividerProps extends ViewProps {
   orientation?: 'horizontal' | 'vertical';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Pressable, Text, ActivityIndicator, View } from 'react-native';
-import { useTheme } from '../../providers/theme-provider';
-import { typography } from '../../tokens/typography';
-import { spacing } from '../../tokens/spacing';
+import { useTheme } from '../../../providers/theme-provider';
+import { typography } from '../../../tokens/typography';
+import { spacing } from '../../../tokens/spacing';
 
 // Button variants
 export type ButtonVariant = 'primary' | 'secondary' | 'muted' | 'ghost' | 'danger';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Text, ViewProps } from 'react-native';
-import { useTheme } from '../../providers/theme-provider';
-import { typography } from '../../tokens/typography';
-import { spacing } from '../../tokens/spacing';
+import { useTheme } from '../../../providers/theme-provider';
+import { typography } from '../../../tokens/typography';
+import { spacing } from '../../../tokens/spacing';
 
 export type BadgeVariant = 'default' | 'success' | 'warning' | 'danger' | 'info' | 'premium' | 'business' | 'organizer';
 export type BadgeSize = 'small' | 'medium';

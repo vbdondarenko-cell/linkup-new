@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TextInputProps, Pressable } from 'react-native';
-import { useTheme } from '../../providers/theme-provider';
-import { typography } from '../../tokens/typography';
-import { spacing } from '../../tokens/spacing';
+import { useTheme } from '../../../providers/theme-provider';
+import { typography } from '../../../tokens/typography';
+import { spacing } from '../../../tokens/spacing';
 
 export interface InputProps extends TextInputProps {
   label?: string;

@@ -24,10 +24,10 @@ import Animated, {
   interpolate,
   Extrapolation,
 } from 'react-native-reanimated';
-import { useTheme } from '../../providers/theme-provider';
-import { useHaptics } from '../../hooks/use-haptics';
-import { spacing, touchTarget } from '../../tokens/spacing';
-import { fontSize, fontWeight } from '../../tokens/typography';
+import { useTheme } from '../../../providers/theme-provider';
+import { useHaptics } from '../../../hooks/use-haptics';
+import { spacing, touchTarget } from '../../../tokens/spacing';
+import { fontSize, fontWeight } from '../../../tokens/typography';
 import { Button } from '../../buttons';
 
 // ============================================

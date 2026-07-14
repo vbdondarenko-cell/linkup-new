@@ -20,8 +20,8 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { useTheme } from '../../ui/providers/theme-provider';
-import { spacing } from '../../ui/tokens/spacing';
+import { useTheme } from '../../../ui/providers/theme-provider';
+import { spacing } from '../../../ui/tokens/spacing';
 import { MapMarker, MapMarkerType } from '../markers/map-marker';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');

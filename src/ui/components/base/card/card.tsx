@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ViewProps, Pressable, PressableProps } from 'react-native';
-import { useTheme } from '../../providers/theme-provider';
-import { spacing } from '../../tokens/spacing';
+import { useTheme } from '../../../providers/theme-provider';
+import { spacing } from '../../../tokens/spacing';
 
 export interface CardProps extends ViewProps {
   variant?: 'default' | 'elevated' | 'outlined' | 'ghost';

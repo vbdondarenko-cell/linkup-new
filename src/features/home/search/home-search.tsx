@@ -24,10 +24,10 @@ import Animated, {
   interpolate,
   Extrapolation,
 } from 'react-native-reanimated';
-import { useTheme } from '../../ui/providers/theme-provider';
-import { useHaptics } from '../../ui/hooks/use-haptics';
-import { spacing } from '../../ui/tokens/spacing';
-import { fontSize, fontWeight } from '../../ui/tokens/typography';
+import { useTheme } from '../../../ui/providers/theme-provider';
+import { useHaptics } from '../../../ui/hooks/use-haptics';
+import { spacing } from '../../../ui/tokens/spacing';
+import { fontSize, fontWeight } from '../../../ui/tokens/typography';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 

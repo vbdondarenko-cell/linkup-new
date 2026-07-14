@@ -22,10 +22,10 @@ import Animated, {
   FadeIn,
   FadeOut,
 } from 'react-native-reanimated';
-import { useTheme } from '../../ui/providers/theme-provider';
-import { useHaptics } from '../../ui/hooks/use-haptics';
-import { spacing } from '../../ui/tokens/spacing';
-import { Chip, ChipGroup } from '../../ui/components/chips';
+import { useTheme } from '../../../ui/providers/theme-provider';
+import { useHaptics } from '../../../ui/hooks/use-haptics';
+import { spacing } from '../../../ui/tokens/spacing';
+import { Chip, ChipGroup } from '../../../ui/components/chips';
 
 interface FilterCategory {
   id: string;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, ViewProps } from 'react-native';
-import { useTheme } from '../../providers/theme-provider';
-import { typography } from '../../tokens/typography';
+import { useTheme } from '../../../providers/theme-provider';
+import { typography } from '../../../tokens/typography';
 
 export type AvatarSize = 'small' | 'medium' | 'large' | 'xlarge';
 

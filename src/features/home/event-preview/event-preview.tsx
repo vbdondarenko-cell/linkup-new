@@ -20,13 +20,13 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import { useTheme } from '../../ui/providers/theme-provider';
-import { useHaptics } from '../../ui/hooks/use-haptics';
-import { spacing } from '../../ui/tokens/spacing';
-import { fontSize, fontWeight } from '../../ui/tokens/typography';
-import { Avatar } from '../../ui/components/avatars';
-import { Badge, StatusBadge } from '../../ui/components/badges';
-import { Button } from '../../ui/components/buttons';
+import { useTheme } from '../../../ui/providers/theme-provider';
+import { useHaptics } from '../../../ui/hooks/use-haptics';
+import { spacing } from '../../../ui/tokens/spacing';
+import { fontSize, fontWeight } from '../../../ui/tokens/typography';
+import { Avatar } from '../../../ui/components/avatars';
+import { Badge, StatusBadge } from '../../../ui/components/badges';
+import { Button } from '../../../ui/components/buttons';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
