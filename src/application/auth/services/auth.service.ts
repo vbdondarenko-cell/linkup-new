@@ -8,7 +8,7 @@ import { RefreshSessionCommand } from '../commands/refresh-session.command';
 import { GetSessionQuery } from '../queries/get-session.query';
 import { LoginRequest, LoginResponse, LogoutRequest, RefreshSessionRequest, SessionInfo } from '../dto/auth.dto';
 import { ISessionRepository } from '../../../domain/auth/repositories/i-session-repository';
-import { IUserRepository } from '../../../domain/auth/use-cases/login-with-telegram';
+import { IUserRepository } from '../../../domain/users/repositories/i-user-repository';
 import { AuthorizationContext, AuthorizationMiddleware } from '../../shared/middleware/authorization-middleware';
 import { LoggingMiddleware } from '../../shared/middleware/logging-middleware';
 

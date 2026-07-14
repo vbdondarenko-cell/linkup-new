@@ -1,4 +1,4 @@
-import { EntityId } from '../../domain/shared/types';
+import { EntityId } from '../../../domain/shared/types';
 
 export type CacheKey = string;
 export type CacheValue = unknown;

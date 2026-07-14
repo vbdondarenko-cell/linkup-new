@@ -4,6 +4,7 @@ import { ISessionRepository } from '../repositories/i-session-repository';
 import { InvalidTelegramDataError, SessionNotFoundError } from '../errors/auth-errors';
 import { EntityId, AsyncResult, Result } from '../../shared/types';
 import { User, UserProps } from '../../users/entities/user';
+import { IUserRepository } from '../../users/repositories/i-user-repository';
 
 export interface LoginWithTelegramInput {
   telegramInitData: TelegramInitData;
@@ -13,12 +14,6 @@ export interface LoginWithTelegramOutput {
   userId: EntityId;
   sessionId: EntityId;
   isNewUser: boolean;
-}
-
-export interface IUserRepository {
-  findByTelegramId(telegramId: string): Promise<User | null>;
-  findById(id: EntityId): Promise<User | null>;
-  save(user: User): Promise<void>;
 }
 
 export class LoginWithTelegramUseCase {

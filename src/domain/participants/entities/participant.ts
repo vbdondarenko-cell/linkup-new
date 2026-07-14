@@ -57,6 +57,10 @@ export class Participant {
     this._checkedInAt = new Date();
   }
 
+  addToWaitlist(): void {
+    this._status = 'waitlisted';
+  }
+
   get id(): EntityId { return this._id; }
   get eventId(): EntityId { return this._eventId; }
   get userId(): EntityId { return this._userId; }
@@ -65,4 +69,6 @@ export class Participant {
   get registeredAt(): Timestamp { return this._registeredAt; }
   get checkedInAt(): Timestamp | null { return this._checkedInAt; }
   get rsvpResponse(): boolean | null { return this._rsvpResponse; }
+  get isOrganizer(): boolean { return this._role === 'organizer'; }
+  get joinedAt(): Timestamp { return this._registeredAt; }
 }

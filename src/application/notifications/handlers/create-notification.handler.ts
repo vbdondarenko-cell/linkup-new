@@ -1,4 +1,4 @@
-import { CreateNotificationRequest } from '../dto/notification.dto';
+import { CreateNotificationRequest, NotificationResponse } from '../dto/notification.dto';
 import { Notification } from '../../../domain/notifications/entities/notification';
 import { INotificationRepository } from '../../../domain/notifications/repositories/i-notification-repository';
 import { IEventDispatcher } from '../../shared/dispatcher/event-dispatcher';

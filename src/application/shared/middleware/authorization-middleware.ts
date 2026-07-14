@@ -1,5 +1,5 @@
 import { AuthorizationApplicationError } from '../errors/application-errors';
-import { EntityId } from '../../domain/shared/types';
+import { EntityId } from '../../../domain/shared/types';
 
 export interface AuthorizationContext {
   userId: EntityId;

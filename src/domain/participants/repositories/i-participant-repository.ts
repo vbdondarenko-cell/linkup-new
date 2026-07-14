@@ -11,4 +11,5 @@ export interface IParticipantRepository {
   delete(id: EntityId): Promise<void>;
   countByEventId(eventId: EntityId): Promise<number>;
   countByStatus(eventId: EntityId, status: ParticipantStatus): Promise<number>;
+  countApprovedByEventId(eventId: EntityId): Promise<number>;
 }

@@ -1,4 +1,4 @@
-import { DomainEvent, EventHandler } from '../../domain/shared/events/domain-event';
+import { DomainEvent, EventHandler } from '../../../domain/shared/events/domain-event';
 
 export interface EventSubscription {
   eventType: string;

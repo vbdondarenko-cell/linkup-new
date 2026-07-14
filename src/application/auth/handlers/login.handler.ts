@@ -2,7 +2,7 @@ import { LoginCommand } from '../commands/login.command';
 import { LoginResponse } from '../dto/auth.dto';
 import { LoginWithTelegramUseCase } from '../../../domain/auth/use-cases/login-with-telegram';
 import { ISessionRepository } from '../../../domain/auth/repositories/i-session-repository';
-import { IUserRepository } from '../../../domain/auth/use-cases/login-with-telegram';
+import { IUserRepository } from '../../../domain/users/repositories/i-user-repository';
 import { Result } from '../../../domain/shared/types';
 
 export class LoginHandler {

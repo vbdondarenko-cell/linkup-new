@@ -1,4 +1,4 @@
-import { EntityId } from '../../domain/shared/types';
+import { EntityId } from '../../../domain/shared/types';
 
 export interface SupabaseConfig {
   url: string;
