@@ -162,7 +162,8 @@ export interface Violation {
 }
 
 // Report Types
-export type ReportReason = 'spam' | 'harassment' | 'fake' | 'dangerous' | 'scam' | 'other';
+import type { ReportReason } from '../../../shared/types/enums';
+export type { ReportReason };
 export type ReportTarget = 'event' | 'user' | 'business' | 'message' | 'image' | 'organizer';
 export type ReportPriority = 'low' | 'medium' | 'high' | 'urgent';
 
@@ -181,7 +182,8 @@ export interface Report {
   updatedAt: Date;
 }
 
-export type ReportStatus = 'pending' | 'ai_reviewed' | 'human_review' | 'resolved' | 'dismissed';
+import type { ReportStatus } from '../../../shared/types/enums';
+export type { ReportStatus };
 
 export interface AIAnalysis {
   sentiment: number;

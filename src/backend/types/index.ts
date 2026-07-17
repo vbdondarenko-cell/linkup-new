@@ -33,34 +33,11 @@ export type PremiumPlan = 'monthly' | 'yearly';
 
 export type PremiumStatus = 'active' | 'expired' | 'cancelled' | 'trial';
 
-export type NotificationType = 
-  | 'join_request'
-  | 'request_accepted'
-  | 'request_declined'
-  | 'new_message'
-  | 'upcoming_event'
-  | 'event_reminder'
-  | 'event_started'
-  | 'event_finished'
-  | 'achievement_earned'
-  | 'badge_unlocked'
-  | 'level_up'
-  | 'trust_increased'
-  | 'organizer_promotion'
-  | 'business_verified'
-  | 'premium_activated'
-  | 'reward_premium_ready'
-  | 'system_announcement';
-
-export type ReportStatus = 'pending' | 'reviewed' | 'resolved' | 'dismissed';
-
-export type ReportReason = 
-  | 'spam'
-  | 'fake_profile'
-  | 'harassment'
-  | 'inappropriate_content'
-  | 'dangerous_behavior'
-  | 'other';
+// Import shared enums
+import type { NotificationType as SharedNotificationType, ReportReason as SharedReportReason, ReportStatus as SharedReportStatus } from '../../shared/types/enums';
+export type NotificationType = SharedNotificationType;
+export type ReportReason = SharedReportReason;
+export type ReportStatus = SharedReportStatus;
 
 export type BusinessRank = 'verified' | 'featured' | 'premium' | 'hub' | 'ambassador';
 

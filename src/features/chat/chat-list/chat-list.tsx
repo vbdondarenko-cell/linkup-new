@@ -30,7 +30,8 @@ import { fontSize, fontWeight } from '../../../ui/tokens/typography';
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 // Types
-export type ChatStatus = 'upcoming' | 'active' | 'countdown' | 'expired' | 'deleted';
+import type { ChatStatus } from '../../shared/types/enums';
+export type { ChatStatus };
 
 export interface ChatItem {
   id: string;

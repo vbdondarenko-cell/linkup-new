@@ -25,7 +25,7 @@ interface NotificationCenterProps {
 }
 
 const getNotificationIcon = (type: NotificationType): string => {
-  const icons: Record<NotificationType, string> = {
+  const icons: Partial<Record<NotificationType, string>> = {
     join_request: '👋',
     request_accepted: '✅',
     request_declined: '❌',
@@ -34,14 +34,24 @@ const getNotificationIcon = (type: NotificationType): string => {
     event_reminder: '⏰',
     event_started: '🎉',
     event_finished: '🏁',
+    event_invite: '📨',
+    event_update: '🔄',
+    event_cancelled: '🚫',
+    participant_joined: '👥',
+    participant_left: '👤',
+    chat_message: '💭',
     achievement_earned: '🏆',
     badge_unlocked: '🎖️',
+    badge_earned: '🏅',
     level_up: '⬆️',
+    xp_earned: '⭐',
     trust_increased: '📈',
     organizer_promotion: '🎤',
     business_verified: '🏢',
-    premium_activated: '⭐',
+    premium_activated: '💎',
+    premium_unlock: '🔓',
     reward_premium_ready: '🎁',
+    system: '⚙️',
     system_announcement: '📢',
   };
   return icons[type] || '📢';

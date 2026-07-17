@@ -29,7 +29,8 @@ import { ActionSheet } from '../../../ui/navigation/modals/modals';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export type ChatStatus = 'upcoming' | 'active' | 'countdown' | 'expired' | 'deleted';
+import type { ChatStatus } from '../../../shared/types/enums';
+export type { ChatStatus };
 
 interface ChatHeaderProps {
   eventName: string;

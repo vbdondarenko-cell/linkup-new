@@ -15,7 +15,7 @@ import {
   ConnectedDevice,
   StorageSettings,
   ThemeType,
-  NotificationType,
+  NotificationSettingsCategory,
   SUPPORTED_LANGUAGES,
 } from '../types';
 
@@ -171,7 +171,7 @@ export const useSettingsState = () => {
     }));
   }, []);
 
-  const setCategoryNotification = useCallback((category: NotificationType, enabled: boolean) => {
+  const setCategoryNotification = useCallback((category: NotificationSettingsCategory, enabled: boolean) => {
     setState(prev => ({
       ...prev,
       notifications: {

@@ -9,11 +9,11 @@ export interface ReportProps {
   reason: ReportReason;
   description?: string;
   evidence?: string[];
-  priority: ReportPriority;
-  status: ReportStatus;
+  priority?: ReportPriority;
+  status?: ReportStatus;
   aiAnalysis?: AIAnalysis;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export class ReportEntity extends BaseEntity<EntityId> {
@@ -37,19 +37,18 @@ export class ReportEntity extends BaseEntity<EntityId> {
     this._reason = props.reason;
     this._description = props.description;
     this._evidence = props.evidence ? [...props.evidence] : [];
-    this._priority = this.calculatePriority(props.reason, props.description);
-    this._status = props.status;
+    this._priority = props.priority ?? this.calculatePriority(props.reason, props.description);
+    this._status = props.status ?? 'pending';
     this._aiAnalysis = props.aiAnalysis;
-    this._createdAt = new Date(props.createdAt);
-    this._updatedAt = new Date(props.updatedAt);
+    this._createdAt = new Date(props.createdAt ?? new Date());
+    this._updatedAt = new Date(props.updatedAt ?? new Date());
   }
 
-  static create(props: Omit<ReportProps, 'id' | 'priority' | 'status' | 'createdAt' | 'updatedAt'>): ReportEntity {
+  static create(props: Omit<ReportProps, 'id' | 'priority' | 'createdAt' | 'updatedAt'>): ReportEntity {
     const now = new Date();
     return new ReportEntity({
       id: `report_${props.targetType}_${props.targetId}_${props.reporterId}_${Date.now()}`,
       ...props,
-      status: 'pending',
       createdAt: now,
       updatedAt: now,
     });
@@ -109,7 +108,7 @@ export class ReportEntity extends BaseEntity<EntityId> {
 
   private calculatePriority(reason: ReportReason, description?: string): ReportPriority {
     // Dangerous and scam reports are always high priority
-    if (reason === 'dangerous' || reason === 'scam') {
+    if (reason === 'dangerous_behavior' || reason === 'scam') {
       return 'urgent';
     }
 
@@ -119,7 +118,7 @@ export class ReportEntity extends BaseEntity<EntityId> {
     }
 
     // Fake content is medium-high
-    if (reason === 'fake') {
+    if (reason === 'fake_profile') {
       return 'medium';
     }
 
@@ -149,19 +148,19 @@ export class ReportEntity extends BaseEntity<EntityId> {
   setAIAnalysis(analysis: AIAnalysis): void {
     this._aiAnalysis = analysis;
     this._priority = ReportEntity.calculatePriorityFromAI(analysis, this._reason);
-    this._status = 'ai_reviewed';
+    this._status = 'reviewed';
     this._updatedAt = new Date();
     this.touch();
   }
 
   markAIReviewed(): void {
-    this._status = 'ai_reviewed';
+    this._status = 'reviewed';
     this._updatedAt = new Date();
     this.touch();
   }
 
   escalateToHuman(): void {
-    this._status = 'human_review';
+    this._status = 'reviewed';
     this._priority = this._priority === 'low' ? 'medium' : 
                      this._priority === 'medium' ? 'high' : 
                      this._priority === 'high' ? 'urgent' : 'urgent';

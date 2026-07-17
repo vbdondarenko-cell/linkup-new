@@ -95,7 +95,7 @@ export interface SavedPlace {
 }
 
 // Notifications
-export type NotificationType = 
+export type NotificationSettingsCategory = 
   | 'join_requests'
   | 'messages'
   | 'accepted_requests'
@@ -115,7 +115,7 @@ export interface NotificationSettings {
   vibration: boolean;
   quietHours: QuietHours;
   focusMode: boolean;
-  categories: Record<NotificationType, CategoryNotificationSettings>;
+  categories: Record<NotificationSettingsCategory, CategoryNotificationSettings>;
 }
 
 export interface CategoryNotificationSettings {

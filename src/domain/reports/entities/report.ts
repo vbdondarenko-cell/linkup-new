@@ -2,14 +2,10 @@ import { BaseEntity } from '../../shared/entities/base-entity';
 import { EntityId, EntityStatus } from '../../shared/types';
 
 export type ReportType = 'event' | 'user' | 'message' | 'business' | 'content';
-export type ReportReason = 
-  | 'spam'
-  | 'inappropriate'
-  | 'harassment'
-  | 'fake'
-  | 'scam'
-  | 'other';
-export type ReportStatus = 'pending' | 'reviewed' | 'resolved' | 'dismissed';
+import type { ReportReason } from '../../../shared/types/enums';
+export type { ReportReason };
+import type { ReportStatus } from '../../../shared/types/enums';
+export type { ReportStatus };
 
 export interface ReportProps {
   reporterId: EntityId;

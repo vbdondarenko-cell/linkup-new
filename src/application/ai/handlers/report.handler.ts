@@ -57,11 +57,11 @@ export class ReportHandler {
     let urgency = 0.5;
 
     // High urgency reasons
-    if (reason === 'dangerous' || reason === 'scam') {
+    if (reason === 'dangerous_behavior' || reason === 'scam') {
       urgency = 0.9;
     } else if (reason === 'harassment') {
       urgency = 0.7;
-    } else if (reason === 'fake') {
+    } else if (reason === 'fake_profile') {
       urgency = 0.5;
     }
 
@@ -81,7 +81,7 @@ export class ReportHandler {
   }
 
   private determineRecommendedAction(urgency: number, reason: ReportReason): ReportAction {
-    if (urgency >= 0.8 || reason === 'dangerous' || reason === 'scam') {
+    if (urgency >= 0.8 || reason === 'dangerous_behavior' || reason === 'scam') {
       return 'escalate';
     }
     if (urgency >= 0.5) {

@@ -1,8 +1,10 @@
+import type { ReportReason } from '../../../shared/types/enums';
+
 export interface CreateReportRequest {
   reporterId: string;
   type: 'event' | 'user' | 'message' | 'business' | 'content';
   targetId: string;
-  reason: 'spam' | 'inappropriate' | 'harassment' | 'fake' | 'scam' | 'other';
+  reason: ReportReason;
   description?: string;
   evidence?: string[];
 }

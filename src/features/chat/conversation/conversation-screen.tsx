@@ -38,7 +38,8 @@ import { MessageComposer, QuickReplies } from '../composer/message-composer';
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 // Types
-export type ChatStatus = 'upcoming' | 'active' | 'countdown' | 'expired' | 'deleted';
+import type { ChatStatus } from '../../../shared/types/enums';
+export type { ChatStatus };
 
 export interface ConversationData {
   id: string;

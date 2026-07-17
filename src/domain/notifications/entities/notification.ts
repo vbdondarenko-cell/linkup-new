@@ -1,18 +1,8 @@
 import { BaseEntity } from '../../shared/entities/base-entity';
 import { EntityId, Timestamp } from '../../shared/types';
 
-export type NotificationType = 
-  | 'event_invite'
-  | 'event_reminder'
-  | 'event_update'
-  | 'event_cancelled'
-  | 'participant_joined'
-  | 'participant_left'
-  | 'chat_message'
-  | 'badge_earned'
-  | 'xp_earned'
-  | 'premium_unlock'
-  | 'system';
+import type { NotificationType } from '../../../shared/types/enums';
+export type { NotificationType };
 
 export interface NotificationProps {
   userId: EntityId;

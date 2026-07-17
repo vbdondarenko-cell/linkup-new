@@ -14,14 +14,14 @@ import { fontWeight } from '../../../ui/tokens/typography';
 
 import { useSettingsState } from '../hooks';
 import { SettingsRow, SettingsDivider, SettingsSectionHeader, SettingsGroup } from '../components';
-import { NotificationType } from '../types';
+import { NotificationSettingsCategory } from '../types';
 
 interface NotificationsScreenProps {
   onBack?: () => void;
   style?: ViewStyle;
 }
 
-const NOTIFICATION_CATEGORIES: Array<{ id: NotificationType; icon: string; title: string }> = [
+const NOTIFICATION_CATEGORIES: Array<{ id: NotificationSettingsCategory; icon: string; title: string }> = [
   { id: 'join_requests', icon: '👋', title: 'Join Requests' },
   { id: 'messages', icon: '💬', title: 'Messages' },
   { id: 'accepted_requests', icon: '✅', title: 'Accepted Requests' },

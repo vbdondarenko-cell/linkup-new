@@ -1,6 +1,7 @@
 import { EntityId } from '../../../domain/shared/types';
 import { 
-  ReportReason, 
+  ReportReason,
+  ReportStatus, 
   ReportTarget, 
   ContentType, 
   RiskLevel,
@@ -106,7 +107,7 @@ export interface ReportDTO {
   description?: string;
   evidence: string[];
   priority: 'low' | 'medium' | 'high' | 'urgent';
-  status: 'pending' | 'ai_reviewed' | 'human_review' | 'resolved' | 'dismissed';
+  status: ReportStatus;
   aiAnalysis?: {
     sentiment: number;
     urgency: number;
