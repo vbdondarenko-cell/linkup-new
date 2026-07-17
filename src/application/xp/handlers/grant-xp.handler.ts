@@ -1,4 +1,4 @@
-import { GrantXPRequest } from '../dto/xp.dto';
+import { GrantXPRequest, XPProgressResponse } from '../dto/xp.dto';
 import { XPService } from '../../../domain/xp/services/xp-service';
 import { IXPRepository } from '../../../domain/xp/repositories/i-xp-repository';
 import { IEventDispatcher } from '../../shared/dispatcher/event-dispatcher';

@@ -1,4 +1,5 @@
 import { DomainError } from '../../shared/errors/base';
+import { PremiumTier } from '../entities/premium-subscription';
 
 export class PremiumError extends DomainError {
   constructor(message: string, details?: Record<string, unknown>) {
@@ -23,5 +24,3 @@ export class AlreadySubscribedError extends PremiumError {
     super('User already has active subscription', { userId });
   }
 }
-
-export type { PremiumTier } from '../entities/premium-subscription';

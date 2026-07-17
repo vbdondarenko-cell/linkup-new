@@ -4,6 +4,7 @@ import { EventMapper } from '../mappers/event.mapper';
 import { EventResponse } from '../dto/event.dto';
 import { IParticipantRepository } from '../../../domain/participants/repositories/i-participant-repository';
 import { Result } from '../../../domain/shared/types';
+import { Coordinates } from '../../../domain/profiles/value-objects/coordinates';
 
 export class UpdateEventHandler {
   constructor(
@@ -22,18 +23,18 @@ export class UpdateEventHandler {
 
     if (domainInput.title) event.updateTitle(domainInput.title);
     if (domainInput.description) event.updateDescription(domainInput.description);
-    if (domainInput.coverImageUrl) event._coverImageUrl = domainInput.coverImageUrl;
+    if (domainInput.coverImageUrl) event.updateCoverImage(domainInput.coverImageUrl);
     if (domainInput.location) event.updateLocation({
-      coordinates: { latitude: domainInput.location.latitude, longitude: domainInput.location.longitude },
+      coordinates: Coordinates.create(domainInput.location.latitude, domainInput.location.longitude),
       address: domainInput.location.address,
       city: domainInput.location.city,
       placeId: domainInput.location.placeId,
     });
     if (domainInput.startDate && domainInput.endDate) {
-      event.updateDates(domainInput.startDate, domainInput.endDate);
+      event.updateDates(new Date(domainInput.startDate), new Date(domainInput.endDate));
     }
-    if (domainInput.visibilit) event._visibility = domainInput.visibility;
-    if (domainInput.interests) event._interests = domainInput.interests;
+    if (domainInput.visibility) event.updateVisibility(domainInput.visibility);
+    if (domainInput.interests) event.updateInterests(domainInput.interests);
 
     await this.eventRepository.save(event);
 

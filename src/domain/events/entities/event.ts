@@ -198,6 +198,21 @@ export class Event extends BaseEntity<EntityId> {
     this.touch();
   }
 
+  updateVisibility(visibility: EventVisibility): void {
+    this._visibility = visibility;
+    this.touch();
+  }
+
+  updateInterests(interests: string[]): void {
+    this._interests = [...interests];
+    this.touch();
+  }
+
+  updateCoverImage(coverImageUrl: string): void {
+    this._coverImageUrl = coverImageUrl;
+    this.touch();
+  }
+
   updateCapacity(capacity: EventCapacity): void {
     this._capacity = capacity;
     this.touch();

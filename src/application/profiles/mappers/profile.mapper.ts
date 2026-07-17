@@ -1,5 +1,5 @@
 import { Profile } from '../../../domain/profiles/entities/profile';
-import { ProfileResponse } from '../dto/profile.dto';
+import { ProfileResponse, CreateProfileRequest, UpdateProfileRequest } from '../dto/profile.dto';
 
 export class ProfileMapper {
   static toDTO(profile: Profile): ProfileResponse {

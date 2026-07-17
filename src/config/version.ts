@@ -19,19 +19,19 @@ export const VERSION = {
     const version = `${this.MAJOR}.${this.MINOR}.${this.PATCH}`;
     return this.PRERELEASE ? `${version}-${this.PRERELEASE}` : version;
   },
-  
-  // Compare versions
-  static compare(v1: string, v2: string): number {
-    const parts1 = v1.replace('-', '.').split('.').map(Number);
-    const parts2 = v2.replace('-', '.').split('.').map(Number);
-    
-    for (let i = 0; i < 3; i++) {
-      if (parts1[i] > parts2[i]) return 1;
-      if (parts1[i] < parts2[i]) return -1;
-    }
-    return 0;
-  },
 };
+
+// Compare versions
+export function compareVersions(v1: string, v2: string): number {
+  const parts1 = v1.replace('-', '.').split('.').map(Number);
+  const parts2 = v2.replace('-', '.').split('.').map(Number);
+  
+  for (let i = 0; i < 3; i++) {
+    if (parts1[i] > parts2[i]) return 1;
+    if (parts1[i] < parts2[i]) return -1;
+  }
+  return 0;
+}
 
 // Application metadata
 export const APP_INFO = {

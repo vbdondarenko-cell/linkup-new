@@ -19,6 +19,7 @@ import {
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useTheme } from '../../ui/providers/theme-provider';
 import { spacing } from '../../ui/tokens/spacing';
+import { fontWeight } from '../../ui/tokens/typography';
 
 // Profile Components
 import { ProfileHeader } from './header/profile-header';

@@ -1,4 +1,4 @@
-import { ActivatePremiumRequest } from '../dto/premium.dto';
+import { ActivatePremiumRequest, PremiumResponse } from '../dto/premium.dto';
 import { PremiumSubscription } from '../../../domain/premium/entities/premium-subscription';
 import { IPremiumRepository } from '../../../domain/premium/repositories/i-premium-repository';
 import { IUserRepository } from '../../../domain/users/repositories/i-user-repository';

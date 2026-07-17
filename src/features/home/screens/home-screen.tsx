@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, View, StatusBar } from 'react-native';
 import { useTheme } from '../../../ui/providers/theme-provider';
+import { typography } from '../../../ui/tokens/typography';
 import { useHomeState, useLocation } from '../hooks';
 import {
   HomeHeader,

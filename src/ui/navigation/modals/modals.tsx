@@ -224,6 +224,7 @@ export const Alert: React.FC<AlertProps> = ({
   variant = 'info',
   confirmLabel = 'OK',
 }) => {
+  const theme = useTheme();
   const handleConfirm = useCallback(() => {
     onClose();
   }, [onClose]);
@@ -273,6 +274,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   destructive = false,
   onConfirm,
 }) => {
+  const theme = useTheme();
   const handleConfirm = useCallback(() => {
     onConfirm();
     onClose();

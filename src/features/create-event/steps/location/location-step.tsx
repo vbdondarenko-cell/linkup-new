@@ -23,6 +23,7 @@ import { useTheme } from '../../../../ui/providers/theme-provider';
 import { useHaptics } from '../../../../ui/hooks/use-haptics';
 import { spacing } from '../../../../ui/tokens/spacing';
 import { fontSize, fontWeight } from '../../../../ui/tokens/typography';
+import { interactive } from '../../../../ui/tokens/colors';
 import { SearchInput } from '../../../../ui/components/inputs';
 import type { CreateEventData } from '../../flow/create-event-flow';
 
@@ -426,7 +427,7 @@ const styles = StyleSheet.create({
   },
   selectedIcon: {
     fontSize: 20,
-    color: theme.colors.interactive.primary,
+    color: interactive.primary.default,
     marginRight: spacing[3],
   },
   selectedInfo: {

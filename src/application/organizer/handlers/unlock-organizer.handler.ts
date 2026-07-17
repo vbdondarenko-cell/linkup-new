@@ -1,4 +1,4 @@
-import { UnlockOrganizerRequest } from '../dto/organizer.dto';
+import { UnlockOrganizerRequest, OrganizerResponse } from '../dto/organizer.dto';
 import { Organizer } from '../../../domain/organizer/entities/organizer';
 import { IOrganizerRepository } from '../../../domain/organizer/repositories/i-organizer-repository';
 import { IEventDispatcher } from '../../shared/dispatcher/event-dispatcher';

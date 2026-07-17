@@ -50,7 +50,7 @@ export class EventCapacity {
     return this.waitlistEnabled && currentCount >= this.max;
   }
 
-  toJSON(): Record<string, number | boolean> {
+  toJSON(): { min: number; max: number; waitlistEnabled: boolean; waitlistLimit?: number } {
     return {
       min: this.min,
       max: this.max,

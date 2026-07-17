@@ -1,7 +1,8 @@
 import { Profile } from '../entities/profile';
 import { IProfileRepository } from '../repositories/i-profile-repository';
 import { Language, Radius, Location } from '../value-objects';
-import { ProfileNotFoundError, UsernameTakenError, InvalidUsernameError } from '../errors/profile-errors';
+import { Coordinates } from '../value-objects/coordinates';
+import { ProfileError, ProfileNotFoundError, UsernameTakenError, InvalidUsernameError } from '../errors/profile-errors';
 import { EntityId, AsyncResult } from '../../shared/types';
 import { Username } from '../../shared/value-objects/username';
 
@@ -60,7 +61,7 @@ export class CreateProfileUseCase {
         radius: input.radius ? Radius.create(input.radius) : Radius.default(),
         location: input.location 
           ? Location.create(
-              { latitude: input.location.latitude, longitude: input.location.longitude },
+              Coordinates.create(input.location.latitude, input.location.longitude),
               input.location.address,
               input.location.city,
               input.location.country

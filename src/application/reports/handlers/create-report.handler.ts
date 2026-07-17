@@ -1,4 +1,4 @@
-import { CreateReportRequest } from '../dto/report.dto';
+import { CreateReportRequest, ReportResponse } from '../dto/report.dto';
 import { Report } from '../../../domain/reports/entities/report';
 import { IReportRepository } from '../../../domain/reports/repositories/i-report-repository';
 import { IEventDispatcher } from '../../shared/dispatcher/event-dispatcher';

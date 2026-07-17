@@ -1,5 +1,6 @@
 import { BaseEntity } from '../../shared/entities/base-entity';
 import { EntityId, EntityStatus } from '../../shared/types';
+import { ulid } from 'ulid';
 
 export interface SessionProps {
   userId: EntityId;
@@ -24,6 +25,15 @@ export class Session extends BaseEntity<EntityId> {
     this._refreshToken = props.refreshToken;
     this._expiresAt = props.expiresAt;
     this._status = props.status;
+  }
+
+  static create(props: Omit<SessionProps, 'status' | 'createdAt'>): Session {
+    return new Session({
+      ...props,
+      id: ulid(),
+      status: 'active',
+      createdAt: new Date(),
+    });
   }
 
   get userId(): EntityId {

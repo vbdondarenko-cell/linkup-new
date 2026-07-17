@@ -6,4 +6,5 @@ export * from './policies/organizer-policy';
 export * from './services/organizer-statistics';
 
 // Re-export rank types
-export { OrganizerRank, OrganizerStatus, OrganizerProps, RANK_THRESHOLDS, RANK_DISPLAY } from './entities/organizer';
+export type { OrganizerRank, OrganizerStatus, OrganizerProps } from './entities/organizer';
+export { RANK_THRESHOLDS, RANK_DISPLAY } from './entities/organizer';

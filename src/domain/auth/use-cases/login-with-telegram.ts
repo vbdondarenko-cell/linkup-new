@@ -1,4 +1,4 @@
-import { TelegramInitDataVO } from '../value-objects/telegram-init-data';
+import { TelegramInitDataVO, TelegramUser } from '../value-objects/telegram-init-data';
 import { Session } from '../entities/session';
 import { ISessionRepository } from '../repositories/i-session-repository';
 import { InvalidTelegramDataError, SessionNotFoundError } from '../errors/auth-errors';
@@ -6,8 +6,15 @@ import { EntityId, AsyncResult, Result } from '../../shared/types';
 import { User, UserProps } from '../../users/entities/user';
 import { IUserRepository } from '../../users/repositories/i-user-repository';
 
+export interface TelegramInitDataRequest {
+  hash: string;
+  queryId: string;
+  user: TelegramUser;
+  authDate: number;
+}
+
 export interface LoginWithTelegramInput {
-  telegramInitData: TelegramInitData;
+  telegramInitData: TelegramInitDataRequest;
 }
 
 export interface LoginWithTelegramOutput {
@@ -24,7 +31,13 @@ export class LoginWithTelegramUseCase {
 
   async execute(input: LoginWithTelegramInput): AsyncResult<LoginWithTelegramOutput> {
     try {
-      const initData = TelegramInitDataVO.create(input.telegramInitData);
+      // Convert request to VO - authDate is a Unix timestamp (seconds)
+      const initData = TelegramInitDataVO.create({
+        hash: input.telegramInitData.hash,
+        queryId: input.telegramInitData.queryId,
+        user: input.telegramInitData.user,
+        authDate: new Date(input.telegramInitData.authDate * 1000),
+      });
 
       if (!initData.isRecent) {
         return { success: false, error: new InvalidTelegramDataError('Data is too old') };

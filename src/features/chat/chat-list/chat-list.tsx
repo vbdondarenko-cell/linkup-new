@@ -56,6 +56,12 @@ export interface ChatItem {
   categoryIcon?: string;
 }
 
+export interface ChatItemProps extends ChatItem {
+  onPress?: () => void;
+  onEventPress?: (eventId: string) => void;
+  onOrganizerPress?: (organizerId: string) => void;
+}
+
 interface ChatListProps {
   chats: ChatItem[];
   onChatPress?: (chatId: string) => void;

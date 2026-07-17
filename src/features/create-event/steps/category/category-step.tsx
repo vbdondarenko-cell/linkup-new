@@ -13,6 +13,7 @@ import {
   StyleSheet,
   ViewStyle,
   Dimensions,
+  Pressable,
 } from 'react-native';
 import Animated, {
   useSharedValue,

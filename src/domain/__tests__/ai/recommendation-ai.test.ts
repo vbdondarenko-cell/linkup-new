@@ -1,10 +1,10 @@
-import { RecommendationAI } from '../../ai/services/recommendation-ai';
+import { RecommendationAIService } from '../../ai/services/recommendation-ai';
 
-describe('RecommendationAI', () => {
-  let recommendationAI: RecommendationAI;
+describe('RecommendationAIService', () => {
+  let recommendationAI: RecommendationAIService;
 
   beforeEach(() => {
-    recommendationAI = new RecommendationAI();
+    recommendationAI = new RecommendationAIService();
   });
 
   describe('generateRecommendations', () => {
@@ -202,9 +202,9 @@ describe('RecommendationAI', () => {
   });
 });
 
-describe('RecommendationAI Configuration', () => {
+describe('RecommendationAIService Configuration', () => {
   it('should use custom configuration', () => {
-    const customAI = new RecommendationAI({
+    const customAI = new RecommendationAIService({
       maxEventsPerCategory: 3,
       minScoreThreshold: 30,
     });
@@ -214,7 +214,7 @@ describe('RecommendationAI Configuration', () => {
   });
 
   it('should use default configuration', () => {
-    const ai = new RecommendationAI();
+    const ai = new RecommendationAIService();
     expect(ai['config'].maxEventsPerCategory).toBe(5);
     expect(ai['config'].minScoreThreshold).toBe(20);
   });
