@@ -10,30 +10,30 @@
 
 export const spacing = {
   // Base unit: 4px
-  0: '0px',
-  px: '1px',
-  0.5: '2px',
-  1: '4px',
-  1.5: '6px',
-  2: '8px',
-  2.5: '10px',
-  3: '12px',
-  3.5: '14px',
-  4: '16px',
-  5: '20px',
-  6: '24px',
-  7: '28px',
-  8: '32px',
-  9: '36px',
-  10: '40px',
-  11: '44px',
-  12: '48px',
-  14: '56px',
-  16: '64px',
-  20: '80px',
-  24: '96px',
-  28: '112px',
-  32: '128px',
+  0: 0,
+  px: 1,
+  0.5: 2,
+  1: 4,
+  1.5: 6,
+  2: 8,
+  2.5: 10,
+  3: 12,
+  3.5: 14,
+  4: 16,
+  5: 20,
+  6: 24,
+  7: 28,
+  8: 32,
+  9: 36,
+  10: 40,
+  11: 44,
+  12: 48,
+  14: 56,
+  16: 64,
+  20: 80,
+  24: 96,
+  28: 112,
+  32: 128,
 } as const;
 
 // ============================================
@@ -53,7 +53,7 @@ export const layout = {
   safeAreaRight: 'env(safe-area-inset-right)',
 
   // Container
-  containerMaxWidth: '1200px',
+  containerMaxWidth: 1200,
   containerPadding: spacing[6],
 
   // Grid
@@ -116,11 +116,11 @@ export const component = {
   // Icon
   iconGap: spacing[2],
   iconSize: {
-    xs: '12px',
-    sm: '16px',
-    md: '20px',
-    lg: '24px',
-    xl: '32px',
+    xs: 12,
+    sm: 16,
+    md: 20,
+    lg: 24,
+    xl: 32,
   },
 } as const;
 
@@ -129,7 +129,7 @@ export const component = {
 // ============================================
 
 export const gap = {
-  none: '0px',
+  none: 0,
   xs: spacing[1],
   sm: spacing[2],
   md: spacing[3],
@@ -144,9 +144,9 @@ export const gap = {
 // ============================================
 
 export const touchTarget = {
-  minimum: '44px',
-  comfortable: '48px',
-  large: '56px',
+  minimum: 44,
+  comfortable: 48,
+  large: 56,
 } as const;
 
 // ============================================
@@ -154,7 +154,7 @@ export const touchTarget = {
 // ============================================
 
 export const padding = {
-  none: '0px',
+  none: 0,
   xs: spacing[1],
   sm: spacing[2],
   md: spacing[3],
@@ -169,10 +169,10 @@ export const padding = {
 // ============================================
 
 export const inset = {
-  0: '0px',
-  1: '1px',
-  2: '2px',
-  4: '4px',
+  0: 0,
+  1: 1,
+  2: 2,
+  4: 4,
 } as const;
 
 // ============================================

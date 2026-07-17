@@ -10,31 +10,31 @@
 
 export const radius = {
   // No radius - for special cases
-  none: '0px',
+  none: 0,
 
   // Subtle - minimal rounding
-  subtle: '4px',
+  subtle: 4,
 
   // Small - buttons, inputs
-  sm: '8px',
+  sm: 8,
 
   // Medium - cards, panels
-  md: '12px',
+  md: 12,
 
   // Large - modals, sheets
-  lg: '16px',
+  lg: 16,
 
   // Extra Large - bottom sheets
-  xl: '20px',
+  xl: 20,
 
   // 2XL - large modals
-  '2xl': '24px',
+  '2xl': 24,
 
   // 3XL - hero elements
-  '3xl': '32px',
+  '3xl': 32,
 
   // Full - avatars, badges, chips
-  full: '9999px',
+  full: 9999,
 } as const;
 
 // ============================================
@@ -115,6 +115,14 @@ export const componentRadius = {
   // Progress
   progress: radius.full,
   progressSmall: radius.sm,
+
+  // Additional component aliases accessed by components
+  badge_sm: radius.sm,
+  bottomSheet: radius.xl,
+  badge: radius.full,
+  toast: radius.lg,
+  textarea: radius.md,
+  chip: radius.full,
 } as const;
 
 // ============================================
