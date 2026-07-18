@@ -1,0 +1,677 @@
+/* LinkUp Design System 2026 */
+.container {
+  min-height: 100vh;
+  background-color: #1c1c1e;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  flex: 1;
+  padding-bottom: 80px;
+  overflow-y: auto;
+}
+.welcomeScreen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+  background-color: #1c1c1e;
+}
+.welcomeContent {
+  text-align: center;
+  padding-top: 2rem;
+}
+.illustration {
+  margin-bottom: 2rem;
+}
+.illustrationCircle {
+  width: 140px;
+  height: 140px;
+  border-radius: 70px;
+  background-color: rgba(51, 153, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+.illustrationEmoji {
+  font-size: 64px;
+}
+.welcomeTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+.welcomeSubtitle {
+  color: #8e8e93;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+.features {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #2c2c2e;
+  border-radius: 12px;
+}
+.featureIcon {
+  font-size: 24px;
+}
+.featureTitle {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.featureDesc {
+  color: #8e8e93;
+  font-size: 0.875rem;
+}
+.welcomeActions {
+  padding-top: 2rem;
+}
+.primaryButton {
+  width: 100%;
+  padding: 1rem;
+  background-color: #3399ff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+.primaryButton:hover {
+  background-color: #2288ee;
+}
+.terms {
+  color: #8e8e93;
+  font-size: 0.75rem;
+  text-align: center;
+}
+.terms a {
+  color: #3399ff;
+  text-decoration: none;
+}
+.mapScreen, .discoveryScreen, .chatsScreen, .profileScreen {
+  padding: 1rem;
+}
+.mapHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+.greeting {
+  color: #8e8e93;
+  font-size: 0.875rem;
+}
+.headerTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+.notificationBtn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: relative;
+}
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ff3b30;
+  color: white;
+  font-size: 0.625rem;
+  padding: 2px 5px;
+  border-radius: 10px;
+}
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: #2c2c2e;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+.searchBar input {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1rem;
+}
+.searchBar input::placeholder {
+  color: #8e8e93;
+}
+.categories {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+.categoryBtn {
+  padding: 0.5rem 1rem;
+  background-color: #2c2c2e;
+  border: none;
+  border-radius: 20px;
+  color: #ffffff;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.categoryBtn.active {
+  background-color: #3399ff;
+}
+.mapPlaceholder {
+  background-color: #2c2c2e;
+  border-radius: 16px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 1rem;
+}
+.mapContent {
+  text-align: center;
+}
+.mapEmoji {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.mapSubtext {
+  color: #8e8e93;
+  font-size: 0.875rem;
+}
+.mapControls {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.mapControl {
+  width: 40px;
+  height: 40px;
+  background-color: #3c3c3e;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1rem 0;
+}
+.eventCard {
+  background-color: #2c2c2e;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  display: flex;
+  position: relative;
+}
+.eventImage {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+.eventInfo {
+  flex: 1;
+  padding: 0.75rem;
+}
+.eventCategory {
+  font-size: 0.75rem;
+  color: #8e8e93;
+}
+.eventTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.25rem 0;
+}
+.eventMeta {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: #8e8e93;
+}
+.premiumBadge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: #ffd700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.625rem;
+  color: #000;
+}
+.fab {
+  position: fixed;
+  bottom: 100px;
+  right: 1rem;
+  width: 56px;
+  height: 56px;
+  background-color: #3399ff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.eventGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.eventCardV {
+  background-color: #2c2c2e;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+.eventImageV {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+.eventInfoV {
+  padding: 0.75rem;
+}
+.eventCategorySmall {
+  font-size: 0.75rem;
+  color: #8e8e93;
+}
+.eventTitleV {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.25rem 0;
+}
+.eventMetaV {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: #8e8e93;
+}
+.chatList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.chatCard {
+  background-color: #2c2c2e;
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  cursor: pointer;
+  position: relative;
+}
+.chatImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.chatInfo {
+  flex: 1;
+}
+.chatHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.chatHeader h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+.statusBadge {
+  font-size: 0.625rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.statusBadge.upcoming {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+.chatOrganizer {
+  color: #8e8e93;
+  font-size: 0.75rem;
+  margin: 0.25rem 0;
+}
+.chatLastMsg {
+  font-size: 0.875rem;
+  margin: 0.25rem 0;
+  color: #ffffff;
+}
+.chatMeta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: #8e8e93;
+}
+.unreadBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #3399ff;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
+}
+.profileHeader {
+  text-align: center;
+  padding: 2rem 0;
+}
+.settingsBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+.displayName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+.username {
+  color: #8e8e93;
+  margin: 0.25rem 0 1rem;
+}
+.badges {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.statCard {
+  background-color: #2c2c2e;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+}
+.statValue {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #3399ff;
+}
+.statLabel {
+  font-size: 0.75rem;
+  color: #8e8e93;
+}
+.profileSection {
+  background-color: #2c2c2e;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.profileSection h3 {
+  font-size: 0.875rem;
+  color: #8e8e93;
+  margin: 0 0 0.5rem;
+}
+.profileSection p {
+  margin: 0;
+}
+.interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.interestTag {
+  background-color: #3c3c3e;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+}
+.editButton {
+  width: 100%;
+  padding: 1rem;
+  background-color: #2c2c2e;
+  border: none;
+  border-radius: 12px;
+  color: #3399ff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.eventDetails {
+  min-height: 100vh;
+  background-color: #1c1c1e;
+}
+.backBtn {
+  background: none;
+  border: none;
+  color: #3399ff;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 1rem;
+}
+.eventHero {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+.eventDetailsContent {
+  padding: 1rem;
+}
+.eventDetailsTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+.eventDetailRow {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0.5rem 0;
+  color: #8e8e93;
+}
+.organizerSection {
+  margin: 1.5rem 0;
+}
+.organizerSection h3 {
+  font-size: 0.875rem;
+  color: #8e8e93;
+  margin-bottom: 0.5rem;
+}
+.organizer {
+  background-color: #2c2c2e;
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+.eventDescription {
+  color: #8e8e93;
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+.joinButton {
+  width: 100%;
+  padding: 1rem;
+  background-color: #3399ff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.createEvent {
+  padding: 1rem;
+  min-height: 100vh;
+  background-color: #1c1c1e;
+}
+.createSubtitle {
+  color: #8e8e93;
+  margin-bottom: 2rem;
+}
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+.formGroup label {
+  display: block;
+  font-size: 0.875rem;
+  color: #8e8e93;
+  margin-bottom: 0.5rem;
+}
+.formGroup input, .formGroup select, .formGroup textarea {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #2c2c2e;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 1rem;
+}
+.formGroup textarea {
+  resize: vertical;
+}
+.createButton {
+  width: 100%;
+  padding: 1rem;
+  background-color: #3399ff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.chatView {
+  min-height: 100vh;
+  background-color: #1c1c1e;
+  display: flex;
+  flex-direction: column;
+}
+.chatViewHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #2c2c2e;
+}
+.chatViewInfo h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+.chatViewInfo span {
+  font-size: 0.75rem;
+  color: #8e8e93;
+}
+.chatMessages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+.systemMessage {
+  text-align: center;
+  color: #8e8e93;
+  font-size: 0.75rem;
+  margin-bottom: 1rem;
+}
+.message {
+  background-color: #2c2c2e;
+  padding: 0.75rem;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+}
+.message strong {
+  display: block;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+.message p {
+  margin: 0;
+}
+.chatInput {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: #2c2c2e;
+}
+.chatInput input {
+  flex: 1;
+  padding: 0.75rem;
+  background-color: #3c3c3e;
+  border: none;
+  border-radius: 24px;
+  color: #ffffff;
+}
+.chatInput button {
+  padding: 0.75rem 1.5rem;
+  background-color: #3399ff;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+}
+.tabBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background-color: #2c2c2e;
+  padding: 0.75rem 0;
+  padding-bottom: 1.5rem;
+  border-top: 1px solid #3c3c3e;
+}
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #8e8e93;
+}
+.tab.activeTab {
+  color: #3399ff;
+}
+.tabIcon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+.tabLabel {
+  font-size: 0.625rem;
+}
