@@ -1,10 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
-
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { getSupabaseAdmin } from '../../../supabase/config/supabase-admin';
 
 export interface HealthStatus {
   status: 'healthy' | 'degraded' | 'unhealthy';
@@ -27,6 +22,7 @@ interface CheckResult {
 }
 
 export async function GET(): Promise<NextResponse> {
+  const supabase = getSupabaseAdmin();
   const startTime = Date.now();
   const checks: HealthStatus['checks'] = {
     api: { status: 'healthy' },
@@ -118,6 +114,7 @@ export async function GET(): Promise<NextResponse> {
 // Specific health checks for detailed monitoring
 export async function GET_db(): Promise<NextResponse> {
   try {
+    const supabase = getSupabaseAdmin();
     const start = Date.now();
     const { error } = await supabase.from('_prisma_migrations').select('id').limit(1);
     const latency = Date.now() - start;
@@ -164,6 +161,7 @@ export async function GET_realtime(): Promise<NextResponse> {
 
 export async function GET_storage(): Promise<NextResponse> {
   try {
+    const supabase = getSupabaseAdmin();
     const start = Date.now();
     const { data, error } = await supabase.storage.listBuckets();
     const latency = Date.now() - start;

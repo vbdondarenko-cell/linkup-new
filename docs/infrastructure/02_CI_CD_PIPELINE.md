@@ -77,13 +77,12 @@ feature/*  ──────►  develop  ──────►  main  ──�
 ## Environment Variables
 
 All secrets stored in GitHub Secrets:
-- `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `SUPABASE_PROJECT_REF`
 - `SUPABASE_ACCESS_TOKEN`
 - `SUPABASE_DB_PASSWORD`
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `EXPO_PUBLIC_SUPABASE_URL`
+- `EXPO_PUBLIC_SUPABASE_ANON_KEY`
 - `SENTRY_DSN`
 - `SENTRY_AUTH_TOKEN`
 - `POSTHOG_KEY`

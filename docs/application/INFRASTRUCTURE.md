@@ -205,8 +205,8 @@ class AuthService {
 // config.ts
 export const config = {
   supabase: {
-    url: process.env.SUPABASE_URL!,
-    anonKey: process.env.SUPABASE_ANON_KEY!,
+    url: process.env.EXPO_PUBLIC_SUPABASE_URL!,
+    anonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!,
     serviceKey: process.env.SUPABASE_SERVICE_KEY!,
   },
   telegram: {

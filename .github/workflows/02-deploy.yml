@@ -63,10 +63,9 @@ jobs:
         run: |
           echo "Validating required secrets..."
           REQUIRED_SECRETS=(
-            "SUPABASE_URL"
             "SUPABASE_SERVICE_ROLE_KEY"
-            "NEXT_PUBLIC_SUPABASE_URL"
-            "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+            "EXPO_PUBLIC_SUPABASE_URL"
+            "EXPO_PUBLIC_SUPABASE_ANON_KEY"
           )
           for secret in "${REQUIRED_SECRETS[@]}"; do
             if [[ -z "\${!secret}" ]]; then
@@ -113,7 +112,7 @@ jobs:
       - name: Generate Supabase types
         run: npm run db:generate-types
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
       - name: Upload build artifacts

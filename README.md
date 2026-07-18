@@ -181,9 +181,9 @@ npm run dev
 
 ```env
 # Supabase
-NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your-public-anon-key
+SUPABASE_SERVICE_ROLE_KEY=server-only-service-role-key
 
 # External Services
 MAPBOX_TOKEN=your-mapbox-token
@@ -191,8 +191,11 @@ SENTRY_DSN=your-sentry-dsn
 POSTHOG_KEY=your-posthog-key
 
 # Telegram
-TELEGRAM_BOT_TOKEN=your-bot-token
+TELEGRAM_BOT_TOKEN=server-only-telegram-bot-token
 ```
+
+See [Supabase setup](docs/SUPABASE_SETUP.md) for database migration, Render,
+RLS, and server-runtime instructions.
 
 ## 🧪 Testing
 
